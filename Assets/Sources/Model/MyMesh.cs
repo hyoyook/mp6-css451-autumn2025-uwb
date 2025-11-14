@@ -14,7 +14,31 @@ public partial class MyMesh : MonoBehaviour
     {
         Mesh theMesh = GetComponent<MeshFilter>().mesh; // get the mesh component
         BuildMesh(Resolution);
+    }
+    void Update()
+    {
 
+        Vector3[] v = mMesh.vertices;          // get curr vertices
+        Vector3[] n = new Vector3[v.Length];   // for recomputed normals
+
+        // each vertex follows its controller
+        for (int i = 0; i < mControllers.Length; i++)
+        {
+            if (mControllers[i] == null)
+            {
+                continue;
+            }
+
+            // pos of vertex i = localPosition of its sphere controller
+            v[i] = mControllers[i].transform.localPosition;
+        }
+
+        // recompute normals
+        ComputeNormals(v, n);
+
+        // write back to the mesh
+        mMesh.vertices = v;
+        mMesh.normals = n;
     }
 
     // build an N x N grid mesh, init controller and normals
@@ -51,12 +75,12 @@ public partial class MyMesh : MonoBehaviour
             }
         }
 
-        int numVerticies = (N + 1) * (N + 1);
+        int numVertices = (N + 1) * (N + 1);
         int numTriangles = N * N * 2;
 
-        // verticies and normals
-        Vector3[] v = new Vector3[numVerticies];
-        Vector3[] n = new Vector3[numVerticies];
+        // vertices and normals
+        Vector3[] v = new Vector3[numVertices];
+        Vector3[] n = new Vector3[numVertices];
         int[] t = new int[numTriangles * 3];
 
         // 2x2 plane on XZ plane at (0, 0)
@@ -69,7 +93,7 @@ public partial class MyMesh : MonoBehaviour
          */
         float start = -size * 0.5f; // -1 : -1 <= x, y <= 1
 
-        // verticies
+        // vertices
         int idx = 0;
         for (int z = 0; z <= N; z++) 
         {
