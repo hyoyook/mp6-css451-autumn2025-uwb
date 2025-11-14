@@ -20,10 +20,10 @@ public class XfromControl : MonoBehaviour {
         Y.SetSliderListener(YValueChanged);
         Z.SetSliderListener(ZValueChanged);
 
-        T.isOn = false;
-        R.isOn = true;
+        T.isOn = true;
+        R.isOn = false;
         S.isOn = false;
-        SetToRotation(true);
+        SetToTranslation(true);
 	}
 	
     //---------------------------------------------------------------------------------
@@ -77,7 +77,7 @@ public class XfromControl : MonoBehaviour {
         if (mSelected == null)
             return;
         Vector3 p = ReadObjectXfrom();
-            // if not in rotation, next two lines of work would be wasted @
+            // if not in rotation, next two lines of work would be wasted
             float dy = v - mPreviousSliderValues.y;
             mPreviousSliderValues.y = v;
         Quaternion q = Quaternion.AngleAxis(dy, Vector3.up);    // **- Please read the notes at the end
@@ -158,7 +158,7 @@ public class XfromControl : MonoBehaviour {
             mSelected.localScale = p;
         } else
         {
-            mSelected.localRotation = mSelected.localRotation * q; // **- Please read the notes at the end
+            mSelected.localRotation = mSelected.localRotation * q; // **- Please read the notes at the end @
         }
     }
 
