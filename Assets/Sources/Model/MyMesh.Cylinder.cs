@@ -1,14 +1,20 @@
 using UnityEngine;
 
+
+
+// Builds the cylinder mesh without top/bottom covers.
+// Should be called from the mesh controller script
 public partial class MyMesh : MonoBehaviour
 {
     private void BuildCylinderMesh(int N)
     {
+
+        // Make sure we have a mesh and clear out the old mesh
         if (mMesh == null)
         {
             mMesh = GetComponent<MeshFilter>().mesh;
         }
-        mMesh.Clear();
+        mMesh.Clear(); // Removes prev vertecies/triangles/normals/uv all the things.
 
         // Clean up old controllers and normals
         if (mControllers != null)
@@ -29,24 +35,37 @@ public partial class MyMesh : MonoBehaviour
             }
         }
 
-        int radialSegments = N;
-        int heightSegments = N;
+        
+        int radialSegments = N; // number of slices around y axis
+        int heightSegments = N; // number of segments along the height
+
 
         int numVertices = (radialSegments + 1) * (heightSegments + 1);
         int numTriangles = radialSegments * heightSegments * 2;
 
-        Vector3[] v = new Vector3[numVertices];
-        Vector3[] n = new Vector3[numVertices];
-        int[] t = new int[numTriangles * 3];
+        Vector3[] v = new Vector3[numVertices]; // Vertex positions
+        Vector3[] n = new Vector3[numVertices]; // vertex normals
+        int[] t = new int[numTriangles * 3]; // triangle indicies
 
+
+        // Modify height/radius here
         float height = 2f;
         float radius = 1f;
 
         float dy = height / heightSegments;
         float yStart = -height * 0.5f;
 
+        // Adjust Cylinder rotation here
         float angleStep = Mathf.PI * 2f / radialSegments;
 
+        // For each height row h: 
+        //      calculate y coord
+        // For each radial column a: 
+        //      calculate angle theta
+        //      x = radius * cos(theta)
+        //      z = radius * sin(theta)
+        //      outward normal = (cos(theta), 0, sin(theta))
+        // 
         int idx = 0;
         for (int h = 0; h <= heightSegments; h++)
         {
@@ -69,6 +88,10 @@ public partial class MyMesh : MonoBehaviour
             }
         }
 
+
+        // Create triangle indicies
+        // One triangle = TopL -> BotL -> BotR
+        // Other Triangle = TopL -> TopR -> BotR
         int tri = 0;
         for (int h = 0; h < heightSegments; h++)
         {
@@ -89,10 +112,13 @@ public partial class MyMesh : MonoBehaviour
             }
         }
 
+
+        // Reassign to mesh
         mMesh.vertices = v;
         mMesh.triangles = t;
         mMesh.normals = n;
 
+        // recreate controller balls and normal lines
         InitControllers(v);
         InitNormals(v, n);
     }
