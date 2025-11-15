@@ -4,6 +4,7 @@ Shader "Unlit/451NoCullShader"
 {
 	Properties
 	{
+		_Color ("Color", Color) = (1,1,1,1)
 		_MainTex ("Texture", 2D) = "white" {}
 	}
 	SubShader
@@ -37,6 +38,7 @@ Shader "Unlit/451NoCullShader"
 
 			sampler2D _MainTex;
 			float4 _MainTex_ST;  // must define to support TRANSFORM_TEX
+			fixed4   _Color;       // defined foir color control
 			
 			v2f vert (appdata v)
 			{
@@ -54,9 +56,10 @@ Shader "Unlit/451NoCullShader"
 			fixed4 frag (v2f i) : SV_Target
 			{
 				// sample the texture
-				fixed4 col = tex2D(_MainTex, i.uv);
-				col = 0.5 * col + 0.5 * fixed4(i.normal, 1.0);
-				return col;
+				// fixed4 col = tex2D(_MainTex, i.uv) * _Color;
+				// col = 0.5 * col + 0.5 * fixed4(i.normal, 1.0);
+				// return col;
+				return _Color;
 			}
 			ENDCG
 		}
