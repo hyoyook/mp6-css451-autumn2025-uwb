@@ -13,7 +13,8 @@ public partial class MyMesh : MonoBehaviour
     private void Start()
     {
         Mesh theMesh = GetComponent<MeshFilter>().mesh; // get the mesh component
-        BuildMesh(Resolution);
+        // BuildMesh(Resolution);
+        BuildCylinderMesh(Resolution);
     }
     void Update()
     {
