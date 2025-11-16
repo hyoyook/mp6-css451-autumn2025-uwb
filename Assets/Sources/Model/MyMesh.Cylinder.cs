@@ -35,7 +35,7 @@ public partial class MyMesh : MonoBehaviour
             }
         }
 
-        
+
         int radialSegments = N; // number of slices around y axis
         int heightSegments = N; // number of segments along the height
 
@@ -56,7 +56,7 @@ public partial class MyMesh : MonoBehaviour
         float yStart = -height * 0.5f;
 
         // Adjust Cylinder rotation here
-        float angleStep = Mathf.PI * 2f / radialSegments;
+        float angleStep = Mathf.PI * 1f / radialSegments;
 
         // For each height row h: 
         //      calculate y coord
@@ -97,9 +97,9 @@ public partial class MyMesh : MonoBehaviour
         {
             for (int a = 0; a < radialSegments; a++)
             {
-                int top_left     = h * (radialSegments + 1) + a;
-                int top_right    = top_left + 1;
-                int bottom_left  = top_left + (radialSegments + 1);
+                int top_left = h * (radialSegments + 1) + a;
+                int top_right = top_left + 1;
+                int bottom_left = top_left + (radialSegments + 1);
                 int bottom_right = bottom_left + 1;
 
                 t[tri++] = top_left;
@@ -119,7 +119,10 @@ public partial class MyMesh : MonoBehaviour
         mMesh.normals = n;
 
         // recreate controller balls and normal lines
-        InitControllers(v);
+        // int heightSegments = mHeightRes;      // whatever you call it
+        // int radialSegments = mCylinderRes;    // your “Cylinder Res.” slider
+        int selectableRow = heightSegments / 2;
+        InitCylinderControllers(v, heightSegments, radialSegments, selectableRow);
         InitNormals(v, n);
     }
 }

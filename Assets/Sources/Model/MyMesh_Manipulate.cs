@@ -2,6 +2,7 @@ using UnityEngine;
 
 public partial class MyMesh : MonoBehaviour
 {
+
     private GameObject[] mControllers;  // one per vertex
     public GameObject SphereControllerPrefab;
     // init sphere controllers
