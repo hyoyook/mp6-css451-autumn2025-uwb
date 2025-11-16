@@ -408,8 +408,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c60cb3d9b626b54b81336378d9ac3d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Resolution: 4
-  AxisFramePrefab: {fileID: 1795043199666914, guid: 2ffe1718366e9384c8bd4b139266eaea, type: 3}
+  columns: 10
+  rows: 4
   SphereControllerPrefab: {fileID: 7569281529392866654, guid: b574c6a6f3659c14494a7309ebabb28a, type: 3}
   NormalPrefab: {fileID: 8222470793749598389, guid: ab92ea54d916b29468271fb4693e3fea, type: 3}
 --- !u!4 &657787220
@@ -450,7 +450,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 177c1c53ccc06934f88932e670fcd805, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

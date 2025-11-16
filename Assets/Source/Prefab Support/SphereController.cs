@@ -19,7 +19,7 @@ public class SphereController : MonoBehaviour
     }
 
     // Called when user LMB clicks on this sphere
-    private void OnMouseDown()
+    /*private void OnMouseDown()
     {
         mIsSelected = !mIsSelected;
 
@@ -37,9 +37,27 @@ public class SphereController : MonoBehaviour
         { 
             mRenderer.material.color = mDefaultColor; 
         }
+    }*/
+
+    // Called BY MainController
+    public void Select()
+    {
+        if (mRenderer == null)
+        { 
+            return; 
+        }
+        //if (mRenderer != null)
+            mRenderer.material.color = mSelectedColor; // red
     }
 
-
-
+    public void Deselect()
+    {
+        if (mRenderer == null)
+        { 
+            return; 
+        }
+        //if (mRenderer != null)
+            mRenderer.material.color = mDefaultColor;
+    }
 
 }
