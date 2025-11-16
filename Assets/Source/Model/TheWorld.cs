@@ -2,10 +2,9 @@ using UnityEngine;
 
 public class TheWorld : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        // Init Plane and Cylinder 
     }
 
     // Update is called once per frame

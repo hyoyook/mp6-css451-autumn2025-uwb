@@ -1,12 +1,16 @@
 ﻿using UnityEngine;
+using UnityEngine.UIElements;
+using static UnityEngine.Rendering.DebugUI.Table;
 
 public partial class MyMesh : MonoBehaviour
 {
     private LineSegment[] mNormals;     // one per vertex
-    public LineSegment NormalPrefab;
+    public  LineSegment NormalPrefab;
+
     private void InitNormals(Vector3[] v, Vector3[] n)
     {
-        mNormals = new LineSegment[v.Length];
+        mNormals = new LineSegment[v.Length];   // one per vertex
+
         for (int i = 0; i < v.Length; i++)
         {
             LineSegment o = Instantiate(NormalPrefab);
@@ -36,17 +40,25 @@ public partial class MyMesh : MonoBehaviour
 
     void ComputeNormals(Vector3[] v, Vector3[] n)
     {
-        // N-by-N quads → (N+1)-by-(N+1) vertices
-        int N = Mathf.Max(1, Resolution);
+        // N-by-M
+        int col = Mathf.Max(1, columns);  // N: number of quads in X
+        int row = Mathf.Max(1, rows);  // M: number of quads in Z
 
-        // loop over all quads, compute normals of both triangles
-        for (int z = 0; z < N; z++)
+        // clear all vertex normal
+        for (int i = 0; i < n.Length; i++)
         {
-            for (int x = 0; x < N; x++)
+            n[i] = Vector3.zero;
+        }
+
+
+        // loop over all quads, compute face normal (2 per quad) 
+        for (int r = 0; r < row; r++)
+        {
+            for (int c = 0; c < col; c++)
             {
-                int i0 = z * (N + 1) + x;        // top-left
+                int i0 = r * (col + 1) + c;      // top-left
                 int i1 = i0 + 1;                 // top-right
-                int i2 = i0 + (N + 1);           // bottom-left
+                int i2 = i0 + (col + 1);         // bottom-left
                 int i3 = i2 + 1;                 // bottom-right
 
                 // Triangle 1: (i0, i2, i3)
@@ -71,7 +83,6 @@ public partial class MyMesh : MonoBehaviour
             else
                 n[i] = Vector3.up;
         }
-
         UpdateNormals(v, n);
 
     }
