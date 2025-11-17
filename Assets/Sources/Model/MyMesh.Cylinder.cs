@@ -122,7 +122,7 @@ public partial class MyMesh : MonoBehaviour
         // int heightSegments = mHeightRes;      // whatever you call it
         // int radialSegments = mCylinderRes;    // your “Cylinder Res.” slider
         int selectableRow = heightSegments / 2;
-        InitCylinderControllers(v, heightSegments, radialSegments, selectableRow);
+        InitCylinderControllers(v, heightSegments, radialSegments, 0);
         InitNormals(v, n);
     }
 }
