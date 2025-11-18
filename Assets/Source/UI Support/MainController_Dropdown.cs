@@ -28,20 +28,22 @@ public partial class MainController : MonoBehaviour
     public void OnShapeDropdownChanged(int index)
     {
 
+        int N, M;
+
         Debug.Log("OnShapeDropdown called with index: " + index);
         if (index == 0) // 0 = Plane
         {
             Debug.Log("Plane Chosen");
-            // theMesh.BuildMesh(N_Slider.GetSliderValue(), M_Slider.GetSliderValue());
+            theMesh.Build_Plane_Mesh((int)N_Slider.GetSliderValue(), (int)M_Slider.GetSliderValue());
         }
         else if (index == 1) // 1 = Cylinder
         {
             Debug.Log("Cylinder Chosen");
-            // Get values from your other sliders
-            // int cylResolution = ... ;
-            // int cylSegments = ... ;
-            // float cylSweep = ... ;
-            // theMesh.BuildCylinderMesh(N, M, 360);
+
+            N = (int)CylinderN_Slider.GetSliderValue();
+            M = (int)CylinderM_Slider.GetSliderValue();
+            int cylinderRotation = (int)Cylinder_Rotation_Slider.GetSliderValue();
+            theMesh.Build_Cylinder_Mesh(N, M, cylinderRotation);
         }
     }
 
@@ -53,17 +55,18 @@ public partial class MainController : MonoBehaviour
         if (shapeChoice == 0) // Plane
         {
 
-            N = (int) N_Slider.GetSliderValue();
-            M = (int) M_Slider.GetSliderValue();
+            N = (int)N_Slider.GetSliderValue();
+            M = (int)M_Slider.GetSliderValue();
             Debug.Log($"ResolutionSliderChanged on shapeChoice={shapeChoice}: Plane N={N}, M={M}");
-
+            theMesh.Build_Plane_Mesh(N, M);
         }
         else if (shapeChoice == 1) // Cylinder
         {
-            N = (int) CylinderN_Slider.GetSliderValue();
-            M = (int) CylinderM_Slider.GetSliderValue();
-            int cylinderRotation = (int) Cylinder_Rotation_Slider.GetSliderValue();
+            N = (int)CylinderN_Slider.GetSliderValue();
+            M = (int)CylinderM_Slider.GetSliderValue();
+            int cylinderRotation = (int)Cylinder_Rotation_Slider.GetSliderValue();
             Debug.Log($"ResolutionSliderChanged on shapeChoice={shapeChoice}: Cylinder N={N}, M={M}, Cylinder Rotation={cylinderRotation}");
+            theMesh.Build_Cylinder_Mesh(N,M, cylinderRotation);
 
 
         }

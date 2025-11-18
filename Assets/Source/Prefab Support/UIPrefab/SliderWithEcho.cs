@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;  // Text Mesh Pro
 
-public class SliderWithEcho : MonoBehaviour {
+public class SliderWithEcho : MonoBehaviour
+{
 
     public Slider TheSlider = null;
     public TextMeshProUGUI TheEcho = null;
@@ -18,8 +19,9 @@ public class SliderWithEcho : MonoBehaviour {
     {
         TheSlider.onValueChanged.AddListener(SliderValueChange);
     }
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         Debug.Assert(TheSlider != null);
         Debug.Assert(TheEcho != null);
         Debug.Assert(TheLabel != null);
@@ -30,9 +32,9 @@ public class SliderWithEcho : MonoBehaviour {
     {
         mCallBack = listener;
     }
-	
+
     // GUI element changes the object
-	void SliderValueChange(float v)
+    void SliderValueChange(float v)
     {
         TheEcho.text = v.ToString("0.0");
         // Debug.Log("SliderValueChange: " + v); @

@@ -6,6 +6,11 @@ using UnityEngine;
 // Should be called from the mesh controller script
 public partial class MyMesh : MonoBehaviour
 {
+
+    public void Build_Cylinder_Mesh(int N, int M, int rotation)
+    {
+        BuildCylinderMesh(N, M, rotation);
+    }
     private void BuildCylinderMesh(int N, int M, int rotation)
     {
 

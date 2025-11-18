@@ -296,11 +296,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9070416639545997232, guid: d728ca1135ab42242b98ec74c0d28bf0, type: 3}
       propertyPath: m_Value
-      value: 4.81
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 9070416639545997232, guid: d728ca1135ab42242b98ec74c0d28bf0, type: 3}
       propertyPath: m_MaxValue
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 9070416639545997232, guid: d728ca1135ab42242b98ec74c0d28bf0, type: 3}
+      propertyPath: m_MinValue
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9070416639545997232, guid: d728ca1135ab42242b98ec74c0d28bf0, type: 3}
       propertyPath: m_WholeNumbers
@@ -831,7 +835,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AxisFramePrefab: {fileID: 0}
-  theMesh: {fileID: 0}
+  theMesh: {fileID: 1700176449}
   sphereLayer:
     serializedVersion: 2
     m_Bits: 0
@@ -839,6 +843,7 @@ MonoBehaviour:
   M_Slider: {fileID: 1794386896}
   CylinderN_Slider: {fileID: 79101796}
   CylinderM_Slider: {fileID: 1531073040}
+  Cylinder_Rotation_Slider: {fileID: 1100306385}
   shapeDropdown: {fileID: 149109766}
 --- !u!4 &414097841
 Transform:
@@ -1499,6 +1504,10 @@ PrefabInstance:
       value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 1642228634760540877, guid: 1bc3e81e805883f4eb627f6f11e25dbf, type: 3}
+      propertyPath: m_MinValue
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1642228634760540877, guid: 1bc3e81e805883f4eb627f6f11e25dbf, type: 3}
       propertyPath: m_WholeNumbers
       value: 1
       objectReference: {fileID: 0}
@@ -1603,6 +1612,10 @@ PrefabInstance:
       value: 360
       objectReference: {fileID: 0}
     - target: {fileID: 4207298705812385724, guid: 1bc3e81e805883f4eb627f6f11e25dbf, type: 3}
+      propertyPath: m_MinValue
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4207298705812385724, guid: 1bc3e81e805883f4eb627f6f11e25dbf, type: 3}
       propertyPath: m_WholeNumbers
       value: 1
       objectReference: {fileID: 0}
@@ -1613,6 +1626,10 @@ PrefabInstance:
     - target: {fileID: 4207298705956386734, guid: 1bc3e81e805883f4eb627f6f11e25dbf, type: 3}
       propertyPath: m_MaxValue
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4207298705956386734, guid: 1bc3e81e805883f4eb627f6f11e25dbf, type: 3}
+      propertyPath: m_MinValue
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4207298705956386734, guid: 1bc3e81e805883f4eb627f6f11e25dbf, type: 3}
       propertyPath: m_WholeNumbers
@@ -2534,6 +2551,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1038099633}
   m_CullTransparentMesh: 1
+--- !u!114 &1100306385 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 581213521283744878, guid: 1bc3e81e805883f4eb627f6f11e25dbf, type: 3}
+  m_PrefabInstance: {fileID: 808040485}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a24c3546b83de84cb12a747d3a735d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1119578625
 GameObject:
   m_ObjectHideFlags: 0
@@ -3002,6 +3030,10 @@ PrefabInstance:
     - target: {fileID: 6632320040891229174, guid: 583bb42ec5242c445a4963c169cdfd21, type: 3}
       propertyPath: m_MaxValue
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6632320040891229174, guid: 583bb42ec5242c445a4963c169cdfd21, type: 3}
+      propertyPath: m_MinValue
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6632320040891229174, guid: 583bb42ec5242c445a4963c169cdfd21, type: 3}
       propertyPath: m_WholeNumbers

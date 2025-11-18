@@ -14,7 +14,7 @@ public partial class MyMesh : MonoBehaviour
     private void Start()
     {
         Mesh theMesh = GetComponent<MeshFilter>().mesh; // get the mesh component
-        BuildMesh(columns, rows);
+        // BuildMesh(columns, rows);
     }
 
     void Update()
@@ -52,6 +52,11 @@ public partial class MyMesh : MonoBehaviour
         Vector3[] n = new Vector3[v.Length];
         ComputeNormals(v, n);
         mMesh.normals = n;
+    }
+
+    public void Build_Plane_Mesh(int col, int row)
+    {
+        BuildMesh(col, row);
     }
 
     // build an N x N grid mesh, init controller and normals
