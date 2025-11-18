@@ -5,20 +5,20 @@ public partial class MyMesh : MonoBehaviour
     Mesh mMesh;
 
     // Resolution Range (2, 20)
-    public int Resolution = 4; // random default -> changed by user (slider)
+    // Support N by M resolution control
+    public int columns = 10;
+    public int rows = 4;
 
-    // Prefabs
-    public GameObject AxisFramePrefab;
+    // Axis prefab can be attached to the camera and SphereController (when clicked)
     
     private void Start()
     {
         Mesh theMesh = GetComponent<MeshFilter>().mesh; // get the mesh component
-        // BuildMesh(Resolution);
-        BuildCylinderMesh(Resolution);
+        BuildMesh(columns, rows);
     }
-    void Update()
-    {
 
+    /*void Update()
+    {
         Vector3[] v = mMesh.vertices;          // get curr vertices
         Vector3[] n = new Vector3[v.Length];   // for recomputed normals
 
@@ -40,11 +40,27 @@ public partial class MyMesh : MonoBehaviour
         // write back to the mesh
         mMesh.vertices = v;
         mMesh.normals = n;
+    }*/
+
+    public void UpdateVertexPosition(int index, Vector3 newLocalPos)
+    {
+        Vector3[] v = mMesh.vertices;
+        v[index] = newLocalPos;
+        mMesh.vertices = v;
+
+        // We also need to re-compute normals now
+        Vector3[] n = new Vector3[v.Length];
+        ComputeNormals(v, n);
+        mMesh.normals = n;
     }
 
     // build an N x N grid mesh, init controller and normals
-    private void BuildMesh(int N) 
+    private void BuildMesh(int col, int row) 
     {
+        // resolution range (2, 20)
+        col = Mathf.Clamp(col, 2, 20);
+        row = Mathf.Clamp(row, 2, 20);
+
         if (mMesh == null) 
         {
             mMesh = GetComponent<MeshFilter>().mesh;
@@ -76,31 +92,40 @@ public partial class MyMesh : MonoBehaviour
             }
         }
 
-        int numVertices = (N + 1) * (N + 1);
-        int numTriangles = N * N * 2;
+        int numVertices  = (col + 1) * (row + 1);
+        int numTriangles = col * row * 2;
 
         // vertices and normals
         Vector3[] v = new Vector3[numVertices];
         Vector3[] n = new Vector3[numVertices];
-        int[] t = new int[numTriangles * 3];
+        int[]     t = new int[numTriangles * 3];
 
         // 2x2 plane on XZ plane at (0, 0)
-        float size = 2f;
-        float gridSpace = size / N;     // if N ==4, gridSpace = 2/4 = 0.5f, N == 20, gridSpace = 0.1f
+        float sizeX = 2f;
+        float sizeZ = 2f;
+
+        float gridSpaceX = sizeX / col;
+        float gridSpaceZ = sizeZ / row;
+
         /* every vertex in the mesh's pos 
          *  x = start + (xIndex * gridSpace)
             z = start + (zIndex * gridSpace)
         -> the plane always stays the same size, only the resolution changes
          */
-        float start = -size * 0.5f; // -1 : -1 <= x, y <= 1
+
+        float startX = -sizeX * 0.5f; // -1 : -1 <= x, z <= 1
+        float startZ = -sizeZ * 0.5f;        
 
         // vertices
         int idx = 0;
-        for (int z = 0; z <= N; z++) 
+        for (int r = 0; r <= row; r++) 
         {
-            for (int x = 0; x <= N; x++) 
+            for (int c = 0; c <= col; c++) 
             {
-                v[idx] = new Vector3(start + x * gridSpace, 0f, start + z * gridSpace);
+                float x = startX + c * gridSpaceX;
+                float z = startZ + r * gridSpaceZ;
+
+                v[idx] = new Vector3(x, 0f, z);
                 n[idx] = Vector3.up; // always (0, 1, 0)
                 idx++;
             }
@@ -108,38 +133,36 @@ public partial class MyMesh : MonoBehaviour
         
         // triangles (each quad -> 2 triangles)
         int tri = 0;
-
-        for (int z = 0; z < N; z++) 
+        for (int r = 0; r < row; r++) 
         {
-            for (int x = 0; x < N; x++)
+            for (int c = 0; c < col; c++)
             {
-                int top_left  = z * (N + 1) + x;
-                int top_right = top_left + 1;
-                int btm_left  = top_left + (N + 1);
-                int btm_right = btm_left + 1;
-                
+                int i0 = r * (col + 1) + c; // top-left
+                int i1 = i0 + 1;            // top-right
+                int i2 = i0 + (col + 1);    // bottom-left
+                int i3 = i2 + 1;            // bottom-right
+
                 // triangle 1 ( top_left, btm_left, btm_right)
-                t[tri++] = top_left; 
-                t[tri++] = btm_left;
-                t[tri++] = btm_right;
+                t[tri++] = i0; 
+                t[tri++] = i2;
+                t[tri++] = i3;
 
                 // triangle 2 ( top_left, btm_right, top_right)
-                t[tri++] = top_left;
-                t[tri++] = btm_right;
-                t[tri++] = top_right;
+                t[tri++] = i0;
+                t[tri++] = i3;
+                t[tri++] = i1;
 
             }
         }
 
-        // Assign to mesh
-        mMesh.vertices = v;
+        // assign to mesh
+        mMesh.vertices  = v;
         mMesh.triangles = t;
-        mMesh.normals = n;
+        mMesh.normals   = n;
 
-        // Initialize controllers and normals
+        // initialize controllers and normals
         InitControllers(v);
         InitNormals(v, n);
-
     }
 
 }
