@@ -67,7 +67,7 @@ public partial class MainController : MonoBehaviour
             int cylinderRotation = (int)Cylinder_Rotation_Slider.GetSliderValue();
             Debug.Log($"ResolutionSliderChanged on shapeChoice={shapeChoice}: Cylinder N={N}, M={M}, Cylinder Rotation={cylinderRotation}");
             theMesh.Build_Cylinder_Mesh(N,M, cylinderRotation);
-
+            
 
         }
     }

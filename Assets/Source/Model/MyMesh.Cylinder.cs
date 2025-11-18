@@ -62,7 +62,7 @@ public partial class MyMesh : MonoBehaviour
  
         // Adjust Cylinder rotation here
         // float angleStep = Mathf.PI * 1f / radialSegments;
-        float angleStep = rotation / radialSegments;
+        float angleStep = (rotation * Mathf.Deg2Rad) / radialSegments;
 
         // For each height row h: 
         //      calculate y coord
