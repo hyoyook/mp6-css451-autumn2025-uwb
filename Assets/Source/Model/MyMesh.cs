@@ -17,7 +17,7 @@ public partial class MyMesh : MonoBehaviour
         BuildMesh(columns, rows);
     }
 
-    /*void Update()
+    void Update()
     {
         Vector3[] v = mMesh.vertices;          // get curr vertices
         Vector3[] n = new Vector3[v.Length];   // for recomputed normals
@@ -40,7 +40,7 @@ public partial class MyMesh : MonoBehaviour
         // write back to the mesh
         mMesh.vertices = v;
         mMesh.normals = n;
-    }*/
+    }
 
     public void UpdateVertexPosition(int index, Vector3 newLocalPos)
     {

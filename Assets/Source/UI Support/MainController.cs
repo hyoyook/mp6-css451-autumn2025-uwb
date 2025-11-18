@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class MainController : MonoBehaviour
+public partial class MainController : MonoBehaviour
 {
     public GameObject AxisFramePrefab; // Assign in Inspector
 
@@ -64,19 +64,5 @@ public class MainController : MonoBehaviour
         mAxisManipulator.transform.position = mSelectedSphere.transform.position;
     }
 
-    /*public void OnShapeDropdownChanged(int index)
-    {
-        if (index == 0) // 0 = Plane
-        {
-            theMesh.BuildMesh(theMesh.Resolution);
-        }
-        else if (index == 1) // 1 = Cylinder
-        {
-            // Get values from your other sliders
-            int cylResolution = ... ;
-            int cylSegments = ... ;
-            float cylSweep = ... ;
-            theMesh.BuildCylinderMesh(cylResolution, cylSegments, cylSweep);
-        }
-    }*/
+
 }

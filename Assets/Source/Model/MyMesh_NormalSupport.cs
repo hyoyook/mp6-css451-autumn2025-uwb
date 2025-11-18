@@ -19,7 +19,7 @@ public partial class MyMesh : MonoBehaviour
             mNormals[i] = o;
             mNormals[i].transform.SetParent(this.transform);
             
-            Debug.Log($"[MyMesh] Created: {o.name}");
+            // Debug.Log($"[MyMesh] Created: {o.name}");
         }
         UpdateNormals(v, n);
     }

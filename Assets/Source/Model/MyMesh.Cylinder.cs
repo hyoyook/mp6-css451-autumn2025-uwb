@@ -6,7 +6,7 @@ using UnityEngine;
 // Should be called from the mesh controller script
 public partial class MyMesh : MonoBehaviour
 {
-    private void BuildCylinderMesh(int N)
+    private void BuildCylinderMesh(int N, int M, int rotation)
     {
 
         // Make sure we have a mesh and clear out the old mesh
@@ -37,7 +37,7 @@ public partial class MyMesh : MonoBehaviour
 
 
         int radialSegments = N; // number of slices around y axis
-        int heightSegments = N; // number of segments along the height
+        int heightSegments = M; // number of segments along the height
 
 
         int numVertices = (radialSegments + 1) * (heightSegments + 1);
@@ -54,9 +54,10 @@ public partial class MyMesh : MonoBehaviour
 
         float dy = height / heightSegments;
         float yStart = -height * 0.5f;
-
+ 
         // Adjust Cylinder rotation here
-        float angleStep = Mathf.PI * 1f / radialSegments;
+        // float angleStep = Mathf.PI * 1f / radialSegments;
+        float angleStep = rotation / radialSegments;
 
         // For each height row h: 
         //      calculate y coord
