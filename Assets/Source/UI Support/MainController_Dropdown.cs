@@ -12,6 +12,11 @@ public partial class MainController : MonoBehaviour
     void Awake()
     {
         shapeDropdown.onValueChanged.AddListener(OnShapeDropdownChanged);
+        N_Slider.TheSlider.onValueChanged.AddListener(ResolutionSliderChanged);
+        M_Slider.TheSlider.onValueChanged.AddListener(ResolutionSliderChanged);
+
+        CylinderN_Slider.TheSlider.onValueChanged.AddListener(ResolutionSliderChanged);
+        CylinderM_Slider.TheSlider.onValueChanged.AddListener(ResolutionSliderChanged);
     }
     void Start()
     {
@@ -36,6 +41,28 @@ public partial class MainController : MonoBehaviour
             // int cylSegments = ... ;
             // float cylSweep = ... ;
             // theMesh.BuildCylinderMesh(20, 360);
+        }
+    }
+
+    public void ResolutionSliderChanged(float __)
+    {
+        int shapeChoice = shapeDropdown.value;
+        int N, M;
+
+        if (shapeChoice == 0)
+        {
+            N = (int) N_Slider.GetSliderValue();
+            M = (int) M_Slider.GetSliderValue();
+            Debug.Log($"ResolutionSliderChanged: Plane N={N}, M={M}");
+
+        }
+        else if (shapeChoice == 1)
+        {
+            N = (int) CylinderN_Slider.GetSliderValue();
+            M = (int) CylinderM_Slider.GetSliderValue();
+            Debug.Log($"ResolutionSliderChanged: Plane N={N}, M={M}");
+
+
         }
     }
 }
