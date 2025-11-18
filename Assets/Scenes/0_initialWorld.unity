@@ -411,6 +411,7 @@ MonoBehaviour:
   Resolution: 20
   AxisFramePrefab: {fileID: 1795043199666914, guid: 2ffe1718366e9384c8bd4b139266eaea, type: 3}
   SphereControllerPrefab: {fileID: 7569281529392866654, guid: b574c6a6f3659c14494a7309ebabb28a, type: 3}
+  SphereMarkerPrefab: {fileID: 7569281529392866654, guid: 535352e51a75a4e429a806eee2027e7e, type: 3}
   NormalPrefab: {fileID: 8222470793749598389, guid: ab92ea54d916b29468271fb4693e3fea, type: 3}
 --- !u!4 &657787220
 Transform:
