@@ -5,7 +5,7 @@ using TMPro;
 public partial class MainController : MonoBehaviour
 {
 
-    public SliderWithEcho N_Slider, M_Slider, CylinderN_Slider, CylinderM_Slider;
+    public SliderWithEcho N_Slider, M_Slider, CylinderN_Slider, CylinderM_Slider, Cylinder_Rotation_Slider;
 
     public TMP_Dropdown shapeDropdown;
 
@@ -17,6 +17,7 @@ public partial class MainController : MonoBehaviour
 
         CylinderN_Slider.SetSliderListener(ResolutionSliderChanged);
         CylinderM_Slider.SetSliderListener(ResolutionSliderChanged);
+        Cylinder_Rotation_Slider.SetSliderListener(ResolutionSliderChanged);
     }
     void Start()
     {
@@ -40,7 +41,7 @@ public partial class MainController : MonoBehaviour
             // int cylResolution = ... ;
             // int cylSegments = ... ;
             // float cylSweep = ... ;
-            // theMesh.BuildCylinderMesh(20, 360);
+            // theMesh.BuildCylinderMesh(N, M, 360);
         }
     }
 
@@ -49,18 +50,20 @@ public partial class MainController : MonoBehaviour
         int shapeChoice = shapeDropdown.value;
         int N, M;
 
-        if (shapeChoice == 0)
+        if (shapeChoice == 0) // Plane
         {
+
             N = (int) N_Slider.GetSliderValue();
             M = (int) M_Slider.GetSliderValue();
-            Debug.Log($"ResolutionSliderChanged: Plane N={N}, M={M}");
+            Debug.Log($"ResolutionSliderChanged on shapeChoice={shapeChoice}: Plane N={N}, M={M}");
 
         }
-        else if (shapeChoice == 1)
+        else if (shapeChoice == 1) // Cylinder
         {
             N = (int) CylinderN_Slider.GetSliderValue();
             M = (int) CylinderM_Slider.GetSliderValue();
-            Debug.Log($"ResolutionSliderChanged: Plane N={N}, M={M}");
+            int cylinderRotation = (int) Cylinder_Rotation_Slider.GetSliderValue();
+            Debug.Log($"ResolutionSliderChanged on shapeChoice={shapeChoice}: Cylinder N={N}, M={M}, Cylinder Rotation={cylinderRotation}");
 
 
         }
