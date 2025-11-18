@@ -14,13 +14,16 @@ public class SliderWithEcho : MonoBehaviour {
     private SliderCallbackDelegate mCallBack = null;           // private instance of the data type
 
 
+    void Awake()
+    {
+        TheSlider.onValueChanged.AddListener(SliderValueChange);
+    }
 	// Use this for initialization
 	void Start () {
         Debug.Assert(TheSlider != null);
         Debug.Assert(TheEcho != null);
         Debug.Assert(TheLabel != null);
-
-        TheSlider.onValueChanged.AddListener(SliderValueChange);
+        SliderValueChange(TheSlider.value);
     }
 
     public void SetSliderListener(SliderCallbackDelegate listener)
@@ -31,7 +34,7 @@ public class SliderWithEcho : MonoBehaviour {
     // GUI element changes the object
 	void SliderValueChange(float v)
     {
-        TheEcho.text = v.ToString("0.0000");
+        TheEcho.text = v.ToString("0.0");
         // Debug.Log("SliderValueChange: " + v); @
         if (mCallBack != null)
             mCallBack(v);

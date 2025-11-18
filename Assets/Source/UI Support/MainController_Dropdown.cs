@@ -12,11 +12,11 @@ public partial class MainController : MonoBehaviour
     void Awake()
     {
         shapeDropdown.onValueChanged.AddListener(OnShapeDropdownChanged);
-        N_Slider.TheSlider.onValueChanged.AddListener(ResolutionSliderChanged);
-        M_Slider.TheSlider.onValueChanged.AddListener(ResolutionSliderChanged);
+        N_Slider.SetSliderListener(ResolutionSliderChanged);
+        M_Slider.SetSliderListener(ResolutionSliderChanged);
 
-        CylinderN_Slider.TheSlider.onValueChanged.AddListener(ResolutionSliderChanged);
-        CylinderM_Slider.TheSlider.onValueChanged.AddListener(ResolutionSliderChanged);
+        CylinderN_Slider.SetSliderListener(ResolutionSliderChanged);
+        CylinderM_Slider.SetSliderListener(ResolutionSliderChanged);
     }
     void Start()
     {
