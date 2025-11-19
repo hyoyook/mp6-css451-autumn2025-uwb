@@ -35,11 +35,12 @@ public partial class MainController : MonoBehaviour
         {
             Debug.Log("Plane Chosen");
             theMesh.Build_Plane_Mesh((int)N_Slider.GetSliderValue(), (int)M_Slider.GetSliderValue());
+            theMesh.CylinderModeOff();
         }
         else if (index == 1) // 1 = Cylinder
         {
             Debug.Log("Cylinder Chosen");
-
+            theMesh.CylinderModeOn();
             N = (int)CylinderN_Slider.GetSliderValue();
             M = (int)CylinderM_Slider.GetSliderValue();
             int cylinderRotation = (int)Cylinder_Rotation_Slider.GetSliderValue();

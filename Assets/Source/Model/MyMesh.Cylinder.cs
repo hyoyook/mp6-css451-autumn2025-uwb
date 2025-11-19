@@ -1,7 +1,5 @@
 using UnityEngine;
 
-
-
 // Builds the cylinder mesh without top/bottom covers.
 // Should be called from the mesh controller script
 public partial class MyMesh : MonoBehaviour
@@ -9,6 +7,7 @@ public partial class MyMesh : MonoBehaviour
 
     public void Build_Cylinder_Mesh(int N, int M, int rotation)
     {
+        SetCylinderDimensions(N, M);
         BuildCylinderMesh(N, M, rotation);
     }
     private void BuildCylinderMesh(int N, int M, int rotation)

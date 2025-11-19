@@ -38,8 +38,18 @@ public partial class MyMesh : MonoBehaviour
             v[i] = mControllers[i].transform.localPosition;
         }
 
-        // recompute normals
-        ComputeNormals(v, n, currentColumns, currentRows);
+        // recompute normals based on mesh type
+        if (IsCylinderMode())
+        {
+            Debug.Log($"Update(): Recomputing cylinder normals with N={currentCylinderN}, M={currentCylinderM}");
+            ComputeCylinderNormals(v, n, currentCylinderN, currentCylinderM);
+        }
+        else
+        {
+            // Debug.Log($"Update(): Recomputing plane normals with Columns={currentColumns}, Rows={currentRows}");
+            // Debug.Log("IsCylinderMode? " + IsCylinderMode());
+            ComputeNormals(v, n, currentColumns, currentRows);
+        }
 
         // write back to the mesh
         mMesh.vertices = v;
