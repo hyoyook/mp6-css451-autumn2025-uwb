@@ -11,7 +11,7 @@ public partial class MyMesh : MonoBehaviour
     Vector3[] v,
     int heightSegments,
     int radialSegments,
-    int selectableColumn)   // 0..radialSegments
+    int selectableColumn)   // 0 == the first column of vertices
     {
         mControllers = new GameObject[v.Length];
 
