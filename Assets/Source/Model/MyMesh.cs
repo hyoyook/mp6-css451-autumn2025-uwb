@@ -8,6 +8,10 @@ public partial class MyMesh : MonoBehaviour
     // Support N by M resolution control
     public int columns = 10;
     public int rows = 4;
+    
+    // Track current grid dimensions for normal computation
+    private int currentColumns;
+    private int currentRows;
 
     // Axis prefab can be attached to the camera and SphereController (when clicked)
     
@@ -35,7 +39,7 @@ public partial class MyMesh : MonoBehaviour
         }
 
         // recompute normals
-        ComputeNormals(v, n);
+        ComputeNormals(v, n, currentColumns, currentRows);
 
         // write back to the mesh
         mMesh.vertices = v;
@@ -50,7 +54,7 @@ public partial class MyMesh : MonoBehaviour
 
         // We also need to re-compute normals now
         Vector3[] n = new Vector3[v.Length];
-        ComputeNormals(v, n);
+        ComputeNormals(v, n, currentColumns, currentRows);
         mMesh.normals = n;
     }
 
@@ -65,6 +69,10 @@ public partial class MyMesh : MonoBehaviour
         // resolution range (2, 20)
         col = Mathf.Clamp(col, 2, 20);
         row = Mathf.Clamp(row, 2, 20);
+        
+        // Store current dimensions for normal computation
+        currentColumns = col;
+        currentRows = row;
 
         if (mMesh == null) 
         {

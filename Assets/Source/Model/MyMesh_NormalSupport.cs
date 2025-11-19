@@ -38,11 +38,11 @@ public partial class MyMesh : MonoBehaviour
         return Vector3.Cross(a, b).normalized;
     }
 
-    void ComputeNormals(Vector3[] v, Vector3[] n)
+    void ComputeNormals(Vector3[] v, Vector3[] n, int col = -1, int row = -1)
     {
-        // N-by-M
-        int col = Mathf.Max(1, columns);  // N: number of quads in X
-        int row = Mathf.Max(1, rows);  // M: number of quads in Z
+        // If col/row not provided, use member variables as fallback
+        if (col < 0) col = Mathf.Max(1, columns);  // N: number of quads in X
+        if (row < 0) row = Mathf.Max(1, rows);  // M: number of quads in Z
 
         // clear all vertex normal
         for (int i = 0; i < n.Length; i++)
