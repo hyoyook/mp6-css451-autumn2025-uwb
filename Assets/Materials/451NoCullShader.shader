@@ -4,8 +4,10 @@ Shader "Unlit/451NoCullShader"
 {
 	Properties
 	{
+		_Color ("Color", Color) = (1,1,1,1)
 		_MainTex ("Texture", 2D) = "white" {}
         _SecTex ("Second Texture", 2D) = "white" {}
+		[Toggle] _UseTexture ("Use Texture", Float) = 0
 	}
 	SubShader
 	{
@@ -42,6 +44,8 @@ Shader "Unlit/451NoCullShader"
 			// float4 _MainTex_ST;  // must define to support TRANSFORM_TEX
             sampler2D _SecTex;
 			float4 _SecTex_ST;  // must define to support TRANSFORM_TEX
+			float _UseTexture;
+			float4 _Color;
 			
 			float MyTexOffset_X;
 			float MyTexOffset_Y;
@@ -66,7 +70,12 @@ Shader "Unlit/451NoCullShader"
 			
 			fixed4 frag (v2f i) : SV_Target
 			{
-				// sample the texture
+				// sample the texture if toggled
+				if (_UseTexture < 0.5)
+				{
+					return _Color;
+				}
+
 				fixed4 col = tex2D(_MainTex, i.uv);
                 fixed4 c2 = tex2D(_SecTex, i.uv1);
                 col = 0.2 * col + 0.8 * c2;

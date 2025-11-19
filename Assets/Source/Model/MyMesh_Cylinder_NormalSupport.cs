@@ -18,7 +18,7 @@ public partial class MyMesh : MonoBehaviour
             n[i] = Vector3.zero;
         }
 
-        // For cylinder: calculate normals by averaging triangle normals at each vertex
+        // calculate normals by averaging triangle normals at each vertex
         int triCount = 0;
         Vector3 firstTriangleNormal = Vector3.zero;
         
@@ -32,39 +32,46 @@ public partial class MyMesh : MonoBehaviour
                 int bottom_right = bottom_left + 1;
 
                 // Triangle 1: top_left, bottom_left, bottom_right
-                Vector3 v0 = v[top_left];
-                Vector3 v1 = v[bottom_left];
-                Vector3 v2 = v[bottom_right];
-                Vector3 edge1 = v1 - v0;
-                Vector3 edge2 = v2 - v0;
-                Vector3 triangleNormal = Vector3.Cross(edge1, edge2).normalized;
+                // Vector3 v0 = v[top_left];
+                // Vector3 v1 = v[bottom_left];
+                // Vector3 v2 = v[bottom_right];
+
+                Vector3 n0 = FaceNormal(v, top_left, bottom_left, bottom_right);
+                // Vector3 edge1 = v1 - v0;
+                // Vector3 edge2 = v2 - v0;
+                // Vector3 triangleNormal = Vector3.Cross(edge1, edge2).normalized;
+                n[top_left] += n0;
+                n[bottom_left] += n0;
+                n[bottom_right] += n0;
                 
                 if (triCount == 0)
                 {
-                    firstTriangleNormal = triangleNormal;
-                    Debug.Log($"First Triangle Normal: {triangleNormal}, edge1={edge1}, edge2={edge2}");
+                    firstTriangleNormal = n0;
+                    Debug.Log($"First Triangle Normal: {firstTriangleNormal}");
                 }
                 
-                n[top_left] += triangleNormal;
-                n[bottom_left] += triangleNormal;
-                n[bottom_right] += triangleNormal;
+                // n[top_left] += triangleNormal;
+                // n[bottom_left] += triangleNormal;
+                // n[bottom_right] += triangleNormal;
 
                 // Triangle 2: top_left, bottom_right, top_right
-                v0 = v[top_left];
-                v1 = v[bottom_right];
-                v2 = v[top_right];
-                edge1 = v1 - v0;
-                edge2 = v2 - v0;
-                triangleNormal = Vector3.Cross(edge1, edge2).normalized;
-                n[top_left] += triangleNormal;
-                n[bottom_right] += triangleNormal;
-                n[top_right] += triangleNormal;
-                
+                // v0 = v[top_left];
+                // v1 = v[bottom_right];
+                // v2 = v[top_right];
+                // edge1 = v1 - v0;
+                // edge2 = v2 - v0;
+                // triangleNormal = Vector3.Cross(edge1, edge2).normalized;
+
+                Vector3 n1 = FaceNormal(v, top_left, bottom_right, top_right);
+                n[top_left] += n1;
+                n[bottom_right] += n1;
+                n[top_right] += n1;
+
                 triCount++;
             }
         }
         
-        Debug.Log($"Total triangles processed: {triCount}");
+        // Debug.Log($"Total triangles processed: {triCount}");
 
         // Normalize all vertex normals
         for (int i = 0; i < n.Length; i++)
@@ -72,10 +79,10 @@ public partial class MyMesh : MonoBehaviour
             if (n[i].sqrMagnitude > 0f)
                 n[i] = n[i].normalized;
             else
-                n[i] = Vector3.forward;
+                n[i] = Vector3.up;
 
             // Debug: Check if normal is pointing mostly along Y-axis (up/down)
-            // A normal pointing up/down would have X and Z close to 0 and Y close to 1 or -1
+            // this tells me if something's wrong with the normal calculation
             if (Mathf.Abs(n[i].y) > 0.9f && Mathf.Abs(n[i].x) < 0.1f && Mathf.Abs(n[i].z) < 0.1f)
             {
                 Debug.LogWarning($"Vertex {i}: Normal points along Y-axis! Normal = {n[i]}, Position = {v[i]}");
