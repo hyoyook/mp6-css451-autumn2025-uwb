@@ -41,7 +41,7 @@ public partial class MyMesh : MonoBehaviour
         // recompute normals based on mesh type
         if (IsCylinderMode())
         {
-            Debug.Log($"Update(): Recomputing cylinder normals with N={currentCylinderN}, M={currentCylinderM}");
+            // Debug.Log($"Update(): Recomputing cylinder normals with N={currentCylinderN}, M={currentCylinderM}");
             ComputeCylinderNormals(v, n, currentCylinderN, currentCylinderM);
         }
         else

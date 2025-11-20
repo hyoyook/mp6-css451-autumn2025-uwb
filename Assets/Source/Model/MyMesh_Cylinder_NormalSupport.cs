@@ -10,7 +10,7 @@ public partial class MyMesh : MonoBehaviour
     // Store cylinder normals for recalculation
     private void ComputeCylinderNormals(Vector3[] v, Vector3[] n, int radialSegments, int heightSegments)
     {
-        Debug.Log($"ComputeCylinderNormals called with radialSegments={radialSegments}, heightSegments={heightSegments}, total vertices={v.Length}");
+        // Debug.Log($"ComputeCylinderNormals called with radialSegments={radialSegments}, heightSegments={heightSegments}, total vertices={v.Length}");
 
         // Clear all vertex normals
         for (int i = 0; i < n.Length; i++)
@@ -47,7 +47,7 @@ public partial class MyMesh : MonoBehaviour
                 if (triCount == 0)
                 {
                     firstTriangleNormal = n0;
-                    Debug.Log($"First Triangle Normal: {firstTriangleNormal}");
+                    // Debug.Log($"First Triangle Normal: {firstTriangleNormal}");
                 }
                 
                 // n[top_left] += triangleNormal;

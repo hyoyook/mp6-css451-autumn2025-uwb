@@ -24,8 +24,8 @@ public class LookAtCameraController : MonoBehaviour
     void Start()
     {
 
-        Debug.Assert(LookAtCamera == null, "LookAtCameraController: LookAtCamera is not assigned!");
-        Debug.Assert(LookAtTarget == null, "LookAtCameraController: LookAtTarget is not assigned!");
+        Debug.Assert(LookAtCamera != null, "LookAtCameraController: LookAtCamera is not assigned!");
+        Debug.Assert(LookAtTarget != null, "LookAtCameraController: LookAtTarget is not assigned!");
 
 
         // Set the initial orientation of the camera to look at the target
@@ -33,7 +33,7 @@ public class LookAtCameraController : MonoBehaviour
         Matrix4x4 camTRS = createMatrix(orientation[0], orientation[1], orientation[2], LookAtCamera.position);
         LookAtCamera.position = camTRS.GetColumn(3);
         LookAtCamera.rotation = camTRS.rotation;
-        Debug.Log("LookAtCameraController: Start completed, camera oriented to target.");
+        // Debug.Log("LookAtCameraController: Start completed, camera oriented to target.");
     }
 
     void LateUpdate()
@@ -88,9 +88,9 @@ public class LookAtCameraController : MonoBehaviour
             float deltaY = -(mouseDelta.y / Screen.height) * 180f;  // invert Y movement
             if (mouseDelta.magnitude > 0.001f)
             {
-                Debug.Log("LookAt cam Position before Tumble: " + LookAtCamera.position);
+                // Debug.Log("LookAt cam Position before Tumble: " + LookAtCamera.position);
                 TumbleSteps(LookAtCamera, LookAtTarget.position, deltaX, deltaY);
-                Debug.Log("LookAt cam Position after Tumble: " + LookAtCamera.position);
+                // Debug.Log("LookAt cam Position after Tumble: " + LookAtCamera.position);
             }
 
         }
@@ -143,7 +143,7 @@ public class LookAtCameraController : MonoBehaviour
         // set camera position and rotation
         cam.position = newCamTRS.GetColumn(3);
         cam.rotation = newCamTRS.rotation;
-        Debug.Log($"LookAtCameraController: TumbleSteps - Camera moved to {cam.position}");
+        // Debug.Log($"LookAtCameraController: TumbleSteps - Camera moved to {cam.position}");
     }
 
 
