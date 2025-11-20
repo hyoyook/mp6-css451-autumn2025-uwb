@@ -33,6 +33,7 @@ public partial class MyMesh : MonoBehaviour
                     ? $"SphereController_{idx}"
                     : $"SphereMarker_{idx}";
 
+                s.SetActive(false);
                 s.transform.localPosition = v[idx];
                 mControllers[idx] = s;
             }

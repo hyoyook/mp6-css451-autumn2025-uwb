@@ -20,6 +20,7 @@ public partial class MyMesh : MonoBehaviour
             mControllers[i] = s;
 
             // Debug.Log($"[MyMesh] Created: {s.name}");
+            s.SetActive(false);
         }
     }
 }
