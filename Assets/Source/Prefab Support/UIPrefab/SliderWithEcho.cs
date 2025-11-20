@@ -31,7 +31,7 @@ public class SliderWithEcho : MonoBehaviour {
     // GUI element changes the object
 	void SliderValueChange(float v)
     {
-        TheEcho.text = v.ToString("0.0000");
+        TheEcho.text = v.ToString("0.0");
         // Debug.Log("SliderValueChange: " + v); @
         if (mCallBack != null)
             mCallBack(v);

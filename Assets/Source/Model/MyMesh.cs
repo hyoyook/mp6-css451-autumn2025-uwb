@@ -54,6 +54,31 @@ public partial class MyMesh : MonoBehaviour
         mMesh.normals = n;
     }
 
+    public void SetVisualizationActive(bool active)
+    {
+        
+        // Safety check: only run if they exist
+        if (mNormals == null || mControllers == null) return;
+        
+        // Toggle the spikes (Normals)
+        for (int i = 0; i < mNormals.Length; i++)
+        {
+            if (mNormals[i] != null)
+            {
+                mNormals[i].gameObject.SetActive(active);
+            }
+        }
+
+        // Toggle the spheres (Controllers)
+        for (int i = 0; i < mControllers.Length; i++)
+        {
+            if (mControllers[i] != null)
+            {
+                mControllers[i].SetActive(active);
+            }
+        }
+    }
+
     // build an N x N grid mesh, init controller and normals
     private void BuildMesh(int col, int row) 
     {

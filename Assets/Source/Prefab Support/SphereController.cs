@@ -5,7 +5,8 @@ public class SphereController : MonoBehaviour
     private Renderer mRenderer;
     private Color mDefaultColor = Color.white;
     private Color mSelectedColor = Color.red;
-    private bool mIsSelected = false;
+
+    //private bool mIsSelected = false; //not needed here anymore
     
     
     // Cache the Renderer and set initial color
