@@ -30,16 +30,16 @@ public partial class MainController : MonoBehaviour
 
         int N, M;
 
-        Debug.Log("OnShapeDropdown called with index: " + index);
+        // Debug.Log("OnShapeDropdown called with index: " + index);
         if (index == 0) // 0 = Plane
         {
-            Debug.Log("Plane Chosen");
+            // Debug.Log("Plane Chosen");
             theMesh.Build_Plane_Mesh((int)N_Slider.GetSliderValue(), (int)M_Slider.GetSliderValue());
             theMesh.CylinderModeOff();
         }
         else if (index == 1) // 1 = Cylinder
         {
-            Debug.Log("Cylinder Chosen");
+            // Debug.Log("Cylinder Chosen");
             theMesh.CylinderModeOn();
             N = (int)CylinderN_Slider.GetSliderValue();
             M = (int)CylinderM_Slider.GetSliderValue();
@@ -58,7 +58,7 @@ public partial class MainController : MonoBehaviour
 
             N = (int)N_Slider.GetSliderValue();
             M = (int)M_Slider.GetSliderValue();
-            Debug.Log($"ResolutionSliderChanged on shapeChoice={shapeChoice}: Plane N={N}, M={M}");
+            // Debug.Log($"ResolutionSliderChanged on shapeChoice={shapeChoice}: Plane N={N}, M={M}");
             theMesh.Build_Plane_Mesh(N, M);
         }
         else if (shapeChoice == 1) // Cylinder
@@ -66,7 +66,7 @@ public partial class MainController : MonoBehaviour
             N = (int)CylinderN_Slider.GetSliderValue();
             M = (int)CylinderM_Slider.GetSliderValue();
             int cylinderRotation = (int)Cylinder_Rotation_Slider.GetSliderValue();
-            Debug.Log($"ResolutionSliderChanged on shapeChoice={shapeChoice}: Cylinder N={N}, M={M}, Cylinder Rotation={cylinderRotation}");
+            // Debug.Log($"ResolutionSliderChanged on shapeChoice={shapeChoice}: Cylinder N={N}, M={M}, Cylinder Rotation={cylinderRotation}");
             theMesh.Build_Cylinder_Mesh(N,M, cylinderRotation);
             
 

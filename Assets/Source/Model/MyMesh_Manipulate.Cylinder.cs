@@ -33,6 +33,9 @@ public partial class MyMesh : MonoBehaviour
                     ? $"SphereController_{idx}"
                     : $"SphereMarker_{idx}";
 
+                int layerIdx = LayerMask.NameToLayer("SphereController");
+                s.layer = layerIdx;
+
                 s.SetActive(false);
                 s.transform.localPosition = v[idx];
                 mControllers[idx] = s;

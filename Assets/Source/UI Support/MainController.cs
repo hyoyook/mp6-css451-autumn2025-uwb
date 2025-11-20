@@ -36,6 +36,7 @@ public partial class MainController : MonoBehaviour
         // 1. Check for selection
         if (Input.GetKey(KeyCode.LeftControl) && Input.GetMouseButtonDown(0))
         {
+            Debug.Log("MainController: Control + Click detected for selection.");
             if (EventSystem.current.IsPointerOverGameObject()) return;
             
             
@@ -43,6 +44,7 @@ public partial class MainController : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit, 100f, sphereLayer))
             {
+                Debug.Log("MainController: Sphere hit for selection.");
                 SphereController hitSphere = hit.collider.GetComponent<SphereController>();
                 if (hitSphere != null)
                 {
@@ -54,12 +56,14 @@ public partial class MainController : MonoBehaviour
         // 2. Check for drag START (on an axis)
         else if (Input.GetMouseButtonDown(0) && mSelectedSphere != null)
         {
+            Debug.Log("MainController: Mouse Down detected for dragging.");
             if (EventSystem.current.IsPointerOverGameObject()) return;
             
             // Try to hit a MANIPULATOR axis
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit, 100f, manipulatorLayer)) // Use manipulator layer
             {
+                Debug.Log("MainController: Manipulator axis hit for dragging.");
                 AxisController axis = hit.collider.GetComponent<AxisController>();
                 if (axis != null)
                 {
@@ -135,6 +139,8 @@ public partial class MainController : MonoBehaviour
             if (mAxisManipulator == null)
             {
                 mAxisManipulator = Instantiate(AxisFramePrefab);
+                mAxisManipulator.name = "AxisManipulator";
+                mAxisManipulator.layer = LayerMask.NameToLayer("AxisManipulator");
             }
             mAxisManipulator.transform.position = mSelectedSphere.transform.position;
         }
