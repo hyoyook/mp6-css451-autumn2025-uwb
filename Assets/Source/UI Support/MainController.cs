@@ -36,7 +36,7 @@ public partial class MainController : MonoBehaviour
         // 1. Check for selection
         if (Input.GetKey(KeyCode.LeftControl) && Input.GetMouseButtonDown(0))
         {
-            Debug.Log("MainController: Control + Click detected for selection.");
+            // Debug.Log("MainController: Control + Click detected for selection.");
             if (EventSystem.current.IsPointerOverGameObject()) return;
             
             
@@ -54,7 +54,7 @@ public partial class MainController : MonoBehaviour
             
         }
         // 2. Check for drag START (on an axis)
-        else if (Input.GetMouseButtonDown(0) && mSelectedSphere != null)
+        if (Input.GetMouseButtonDown(0) && mSelectedSphere != null)
         {
             Debug.Log("MainController: Mouse Down detected for dragging.");
             if (EventSystem.current.IsPointerOverGameObject()) return;
@@ -76,7 +76,7 @@ public partial class MainController : MonoBehaviour
             }
         }
         // 3. Check for drag END
-        else if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0))
         {
             mIsDragging = false;
         }
@@ -127,7 +127,6 @@ public partial class MainController : MonoBehaviour
             {
                 mSelectedSphere.GetComponent<SphereController>().Deselect();
                 mSphereIsSelected = false;
-
             }
 
             mSelectedSphere = newSphere;
