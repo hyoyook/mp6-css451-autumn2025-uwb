@@ -852,14 +852,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a76cbb19b9b3a1e43a14fbe4a635df17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AxisFramePrefab: {fileID: 0}
+  AxisFramePrefab: {fileID: 1612508849}
   theMesh: {fileID: 1700176449}
   sphereLayer:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 128
   manipulatorLayer:
     serializedVersion: 2
     m_Bits: 64
+  N_Slider: {fileID: 2037139119}
+  M_Slider: {fileID: 1794386896}
+  CylinderN_Slider: {fileID: 79101796}
+  CylinderM_Slider: {fileID: 1531073040}
+  Cylinder_Rotation_Slider: {fileID: 1100306385}
+  shapeDropdown: {fileID: 149109766}
 --- !u!4 &414097841
 Transform:
   m_ObjectHideFlags: 0
@@ -3093,6 +3099,11 @@ Transform:
   - {fileID: 1700176450}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1612508849 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1795043199666914, guid: 2ffe1718366e9384c8bd4b139266eaea, type: 3}
+  m_PrefabInstance: {fileID: 1870470210}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1629378591
 GameObject:
   m_ObjectHideFlags: 0
