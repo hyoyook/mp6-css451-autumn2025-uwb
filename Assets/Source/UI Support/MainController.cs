@@ -143,7 +143,7 @@ public partial class MainController : MonoBehaviour
                 Debug.Log("Creating Axis Manipulator Instance");
                 mAxisManipulator = Instantiate(AxisFramePrefab);
                 mAxisManipulator.name = "AxisManipulator";
-                mAxisManipulator.layer = LayerMask.NameToLayer("AxisManipulator");
+                // mAxisManipulator.layer = LayerMask.NameToLayer("AxisManipulator");
                 applyAxisControllerAndLayer(mAxisManipulator);
                 Debug.Log("Axis Manipulator Layer: " + mAxisManipulator.layer);
             }
