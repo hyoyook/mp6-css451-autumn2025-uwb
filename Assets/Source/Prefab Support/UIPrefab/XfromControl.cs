@@ -34,6 +34,7 @@ public class XfromControl : MonoBehaviour {
     // Initialize slider bars to specific function
     void SetToTranslation(bool v)
     {
+        if (!v) return;
         if (InTextureMode)
         {
             // Z disabled in UV mode
@@ -65,6 +66,7 @@ public class XfromControl : MonoBehaviour {
 
     void SetToScaling(bool v)
     {
+        if (!v) return;
         if (InTextureMode)
         {
             // Z disabled in UV mode
@@ -95,6 +97,7 @@ public class XfromControl : MonoBehaviour {
 
     void SetToRotation(bool v)
     {
+        if (!v) return;
         if (InTextureMode)
         {
             // only Z rotation

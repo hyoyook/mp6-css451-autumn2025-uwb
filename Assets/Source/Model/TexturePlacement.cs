@@ -16,13 +16,14 @@ public class TexturePlacement : MonoBehaviour
     private MyMesh mMyMesh;
     private Mesh mMesh;
 
-    private void Start()
+    private void Awake()
     {
         mMyMesh = GetComponent<MyMesh>();
         mMesh   = GetComponent<MeshFilter>().mesh;
     }
 
-    private void Update()
+    // LateUpdate so that it's called after MyMesh.Update()
+    private void LateUpdate()
     {
         if (mMyMesh == null || mMesh == null )
         {
@@ -36,8 +37,7 @@ public class TexturePlacement : MonoBehaviour
 
         // base UV
         Vector2[] baseUV = mMyMesh.mInitUV;
-
-        if (baseUV != null)
+        if (baseUV == null)
         {
             return;
         }

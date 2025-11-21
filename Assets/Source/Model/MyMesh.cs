@@ -221,7 +221,7 @@ public partial class MyMesh : MonoBehaviour
         mMesh.normals   = n;
         mMesh.uv = uv;
 
-        // store original plannar uv for TRS <-------------------- (Hyob) note to myself: do i need this?
+        //// store original plannar uv for TRS <-------------------- (Hyob) note to myself: do i need this?
         mInitUV = new Vector2[uv.Length];
         System.Array.Copy(uv, mInitUV, uv.Length);
 
