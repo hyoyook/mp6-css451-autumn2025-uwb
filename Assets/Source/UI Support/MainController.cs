@@ -73,7 +73,7 @@ public partial class MainController : MonoBehaviour
             if (hitAxis)
             {
                 // Debug.Log("MainController: Manipulator axis hit for dragging.");
-                Debug.DrawLine(ray.origin, hit.point, Color.yellow, 60f);
+                // Debug.DrawLine(ray.origin, hit.point, Color.yellow, 60f);
                 AxisController axis = hit.collider.GetComponent<AxisController>();
                 if (axis != null)
                 {
