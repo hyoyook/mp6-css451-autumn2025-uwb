@@ -138,7 +138,7 @@ public partial class MainController : MonoBehaviour
             // Make sure the spikes viz know to stay on
             mSphereIsSelected = true;
 
-            if (mAxisManipulator == null || mAxisManipulator.layer != LayerMask.NameToLayer("AxisManipulator"))
+            if (mAxisManipulator == null)
             {
                 Debug.Log("Creating Axis Manipulator Instance");
                 mAxisManipulator = Instantiate(AxisFramePrefab);
