@@ -100,31 +100,53 @@ public partial class MainController : MonoBehaviour
 
     void ProcessDrag()
     {
-        Vector3 mouseDelta = Input.mousePosition - mDragStartPosition;
+        if (mSelectedSphere == null) return;
 
-        float dragSpeed = 0.01f;
+        // Calculate the total mouse movement from the moment the drag started
+        Vector3 mouseTotalDelta = Input.mousePosition - mDragStartPosition;
 
-        Vector3 worldOffset = Vector3.zero;
+        // Use a fixed Z-speed variable for better responsiveness
+        float xyDragSpeed = 0.01f;
+        float zDragSpeed = 0.05f; 
+        
+        // Calculate the movement based on the manipulator's world-space axes
+        Vector3 manipulatorRight = mAxisManipulator.transform.right;   // X-Axis
+        Vector3 manipulatorUp = mAxisManipulator.transform.up;       // Y-Axis
+        Vector3 manipulatorForward = mAxisManipulator.transform.forward; // Z-Axis
+
+        float totalDisplacement = 0f;
+        Vector3 movementVector = Vector3.zero; // The world direction vector to move along
 
         switch (mSelectedAxis)
         {
             case AxisController.Axis.X:
-                worldOffset.x = mouseDelta.x * dragSpeed;
+                // X-movement is primarily horizontal screen motion
+                movementVector = manipulatorRight;
+                totalDisplacement = mouseTotalDelta.x * xyDragSpeed;
                 break;
+
             case AxisController.Axis.Y:
-                worldOffset.y = mouseDelta.y * dragSpeed;
+                // Y-movement is primarily vertical screen motion
+                movementVector = manipulatorUp;
+                totalDisplacement = mouseTotalDelta.y * xyDragSpeed;
                 break;
+
             case AxisController.Axis.Z:
-                worldOffset.z = mouseDelta.y * dragSpeed;
+                // Z-movement (depth) often maps better to vertical screen motion
+                movementVector = manipulatorForward;
+                totalDisplacement = mouseTotalDelta.y * zDragSpeed; 
                 break;
         }
 
-        // Apply the new position
-        Vector3 newPos = mDragStartSpherePosition + worldOffset;
-        mSelectedSphere.transform.position = newPos; // Move the sphere
-        mAxisManipulator.transform.position = newPos; // Move the manipulator with it
+        // 1. Calculate the New Position
+        // New Position = (Starting World Position) + (Movement Direction * Total Displacement)
+        Vector3 newWorldPosition = mDragStartSpherePosition + movementVector * totalDisplacement;
 
-        // Must tell MyMesh to update its data
+        // 2. Apply the position to the View components
+        mSelectedSphere.transform.position = newWorldPosition;
+        mAxisManipulator.transform.position = newWorldPosition;
+
+        // 3. Update the Mesh Model
         UpdateMeshVertex();
     }
 
