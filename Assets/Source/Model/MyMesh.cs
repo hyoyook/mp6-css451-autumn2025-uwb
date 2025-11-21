@@ -91,6 +91,11 @@ public partial class MyMesh : MonoBehaviour
                 mControllers[i].SetActive(active);
             }
         }
+
+        if (!active){
+            GameObject axisManipulator = GameObject.Find("AxisManipulator");
+            GameObject.Destroy(axisManipulator);
+        }
     }
 
     public void Build_Plane_Mesh(int N, int M)

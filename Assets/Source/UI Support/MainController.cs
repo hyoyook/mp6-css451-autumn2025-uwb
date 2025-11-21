@@ -24,11 +24,14 @@ public partial class MainController : MonoBehaviour
 
     void Update()
     {
-        bool desiredVisualState = Input.GetKey(KeyCode.LeftControl) || mSphereIsSelected;
-
+        // bool desiredVisualState = Input.GetKey(KeyCode.LeftControl) || mSphereIsSelected;
+        bool desiredVisualState = Input.GetKey(KeyCode.LeftControl);
+        Debug.Log("Desired Visualization State: " + desiredVisualState);
         if (desiredVisualState != mControlWasDown)
         {
             // Only call the function if the state has changed
+            
+            mSelectedSphere = null;
             theMesh.SetVisualizationActive(desiredVisualState);
             mControlWasDown = desiredVisualState;
         }
@@ -42,11 +45,11 @@ public partial class MainController : MonoBehaviour
 
             // Try to select a SPHERE
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 500f);
+            // Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 500f);
             if (Physics.Raycast(ray, out RaycastHit hit, 100f, sphereLayer))
             {
-                Debug.DrawLine(ray.origin, hit.point, Color.green, 500f);
-                Debug.Log("MainController: Sphere hit for selection.");
+                // Debug.DrawLine(ray.origin, hit.point, Color.green, 500f);
+                // Debug.Log("MainController: Sphere hit for selection.");
                 SphereController hitSphere = hit.collider.GetComponent<SphereController>();
                 if (hitSphere != null)
                 {
@@ -59,22 +62,22 @@ public partial class MainController : MonoBehaviour
         // 2. Check for drag START (on an axis)
         if (Input.GetMouseButtonDown(0) && mSelectedSphere != null)
         {
-            Debug.Log("MainController: Mouse Down detected for dragging.");
+            // Debug.Log("MainController: Mouse Down detected for dragging.");
             if (EventSystem.current.IsPointerOverGameObject()) return;
 
             // Try to hit a MANIPULATOR axis
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            Debug.DrawRay(ray.origin, ray.direction * 1000f, Color.blue, 200f);
+            // Debug.DrawRay(ray.origin, ray.direction * 1000f, Color.blue, 200f);
             bool hitAxis = Physics.Raycast(ray, out RaycastHit hit, 1000f, manipulatorLayer);
-            Debug.Log("MainController: Raycast for manipulator axis hit: " + hitAxis);
+            // Debug.Log("MainController: Raycast for manipulator axis hit: " + hitAxis);
             if (hitAxis)
             {
-                Debug.Log("MainController: Manipulator axis hit for dragging.");
+                // Debug.Log("MainController: Manipulator axis hit for dragging.");
                 Debug.DrawLine(ray.origin, hit.point, Color.yellow, 60f);
                 AxisController axis = hit.collider.GetComponent<AxisController>();
                 if (axis != null)
                 {
-                    Debug.Log("MainController: Starting drag on axis " + axis.axisDirection);
+                    // Debug.Log("MainController: Starting drag on axis " + axis.axisDirection);
                     // Start the drag!
                     mIsDragging = true;
                     mSelectedAxis = axis.axisDirection;
@@ -107,8 +110,8 @@ public partial class MainController : MonoBehaviour
 
         // Use a fixed Z-speed variable for better responsiveness
         float xyDragSpeed = 0.01f;
-        float zDragSpeed = 0.05f; 
-        
+        float zDragSpeed = 0.05f;
+
         // Calculate the movement based on the manipulator's world-space axes
         Vector3 manipulatorRight = mAxisManipulator.transform.right;   // X-Axis
         Vector3 manipulatorUp = mAxisManipulator.transform.up;       // Y-Axis
@@ -124,7 +127,7 @@ public partial class MainController : MonoBehaviour
                 movementVector = manipulatorRight;
                 totalDisplacement = mouseTotalDelta.x * xyDragSpeed;
                 break;
- 
+
             case AxisController.Axis.Y:
                 // Y-movement is primarily vertical screen motion
                 movementVector = manipulatorUp;
@@ -134,7 +137,7 @@ public partial class MainController : MonoBehaviour
             case AxisController.Axis.Z:
                 // Z-movement (depth) often maps better to vertical screen motion
                 movementVector = manipulatorForward;
-                totalDisplacement = mouseTotalDelta.y * zDragSpeed; 
+                totalDisplacement = mouseTotalDelta.y * zDragSpeed;
                 break;
         }
 
@@ -156,24 +159,24 @@ public partial class MainController : MonoBehaviour
         {
             if (mSelectedSphere != null)
             {
-                mSelectedSphere.GetComponent<SphereController>().Deselect();
+                // mSelectedSphere.GetComponent<SphereController>().Deselect();
                 mSphereIsSelected = false;
             }
 
             mSelectedSphere = newSphere;
-            mSelectedSphere.GetComponent<SphereController>().Select();
+            // mSelectedSphere.GetComponent<SphereController>().Select();
 
             // Make sure the spikes viz know to stay on
             mSphereIsSelected = true;
 
             if (mAxisManipulator == null)
             {
-                Debug.Log("Creating Axis Manipulator Instance");
+                // Debug.Log("Creating Axis Manipulator Instance");
                 mAxisManipulator = Instantiate(AxisFramePrefab);
                 mAxisManipulator.name = "AxisManipulator";
                 // mAxisManipulator.layer = LayerMask.NameToLayer("AxisManipulator");
                 applyAxisControllerAndLayer(mAxisManipulator);
-                Debug.Log("Axis Manipulator Layer: " + mAxisManipulator.layer);
+                // Debug.Log("Axis Manipulator Layer: " + mAxisManipulator.layer);
             }
             mAxisManipulator.transform.position = mSelectedSphere.transform.position;
         }
@@ -195,29 +198,30 @@ public partial class MainController : MonoBehaviour
             // Tell the mesh to update!
             if (!theMesh.IsCylinderMode())
             {
-                Debug.Log($"Updating Vertex {index} to Local Pos {localPos}");
+                // Debug.Log($"Updating Vertex {index} to Local Pos {localPos}");
                 theMesh.UpdateVertexPosition(index, localPos);
-            } else
+            }
+            else
             {
-                Debug.Log($"[Cylinder Mode] Updating Vertex {index} to Local Pos {localPos}");
+                // Debug.Log($"[Cylinder Mode] Updating Vertex {index} to Local Pos {localPos}");
                 theMesh.UpdateCylinderVertexPosition(index, localPos);
             }
-            
+
         }
     }
 
     void applyAxisControllerAndLayer(GameObject axisController)
     {
-        Debug.Log("Applying Axis Controller to children of " + axisController.name);
+        // Debug.Log("Applying Axis Controller to children of " + axisController.name);
         GameObject xAxis = axisController.transform.Find("X-Axis").gameObject;
         GameObject yAxis = axisController.transform.Find("Y-Axis").gameObject;
         GameObject zAxis = axisController.transform.Find("Z-Axis").gameObject;
 
 
 
-        Debug.Log("X Axis: " + xAxis.name);
-        Debug.Log("Y Axis: " + yAxis.name);
-        Debug.Log("Z Axis: " + zAxis.name);
+        // Debug.Log("X Axis: " + xAxis.name);
+        // Debug.Log("Y Axis: " + yAxis.name);
+        // Debug.Log("Z Axis: " + zAxis.name);
 
         if (xAxis.layer != LayerMask.NameToLayer("AxisManipulator"))
         {

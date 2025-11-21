@@ -133,19 +133,19 @@ public partial class MyMesh : MonoBehaviour
 
 
     public void UpdateCylinderVertexPosition(int index, Vector3 newPos) {
-        Debug.Log($"UpdateCylinderVertexPosition called for index {index} to newPos {newPos}");
+        // Debug.Log($"UpdateCylinderVertexPosition called for index {index} to newPos {newPos}");
         Vector3[] vertices = mMesh.vertices;
 
         // need to caluate the radius by get the new radius from the center.
         Vector3 oldPosition = vertices[index];
 
-        Debug.Log($"Old position: {oldPosition}, old radius: {new Vector2(oldPosition.x, oldPosition.z).magnitude}");
+        // Debug.Log($"Old position: {oldPosition}, old radius: {new Vector2(oldPosition.x, oldPosition.z).magnitude}");
 
         // Radius change
         float oldRadius = new Vector2(oldPosition.x, oldPosition.z).magnitude;
         float newRadius = new Vector2(newPos.x, newPos.z).magnitude;
 
-        Debug.Log($"new radius={newRadius}, radiusScale={newRadius / oldRadius}");
+        // Debug.Log($"new radius={newRadius}, radiusScale={newRadius / oldRadius}");
 
         if (oldRadius < 0.0001f) {
             return; // avoid division by zero
@@ -159,14 +159,14 @@ public partial class MyMesh : MonoBehaviour
         int heightSegments = currentCylinderM;
 
         int height = index / (radialSegments + 1);
-        Debug.Log($"Vertex index {index} is at height row {height}");
+        // Debug.Log($"Vertex index {index} is at height row {height}");
 
         // Update all vertices in that height row
         for (int a = 0; a <= radialSegments; a++) {
             int idx = height * (radialSegments + 1) + a;
 
             if (idx >= vertices.Length) {
-                Debug.LogWarning($"Index {idx} out of bounds for vertices array of length {vertices.Length}");
+                // Debug.LogWarning($"Index {idx} out of bounds for vertices array of length {vertices.Length}");
                 continue;
             }
 
@@ -188,7 +188,7 @@ public partial class MyMesh : MonoBehaviour
             int idx = height * (radialSegments + 1) + a;
 
             if (idx >= mControllers.Length) {
-                Debug.LogWarning($"Index {idx} out of bounds for controllers array of length {mControllers.Length}");
+                // Debug.LogWarning($"Index {idx} out of bounds for controllers array of length {mControllers.Length}");
                 continue;
             }
 
