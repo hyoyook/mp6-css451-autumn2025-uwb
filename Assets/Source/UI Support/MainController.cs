@@ -124,7 +124,7 @@ public partial class MainController : MonoBehaviour
                 movementVector = manipulatorRight;
                 totalDisplacement = mouseTotalDelta.x * xyDragSpeed;
                 break;
-
+ 
             case AxisController.Axis.Y:
                 // Y-movement is primarily vertical screen motion
                 movementVector = manipulatorUp;
@@ -193,7 +193,16 @@ public partial class MainController : MonoBehaviour
             Vector3 localPos = theMesh.transform.InverseTransformPoint(mSelectedSphere.transform.position);
 
             // Tell the mesh to update!
-            theMesh.UpdateVertexPosition(index, localPos);
+            if (!theMesh.IsCylinderMode())
+            {
+                Debug.Log($"Updating Vertex {index} to Local Pos {localPos}");
+                theMesh.UpdateVertexPosition(index, localPos);
+            } else
+            {
+                Debug.Log($"[Cylinder Mode] Updating Vertex {index} to Local Pos {localPos}");
+                theMesh.UpdateCylinderVertexPosition(index, localPos);
+            }
+            
         }
     }
 
