@@ -176,7 +176,7 @@ public partial class MyMesh : MonoBehaviour
             float newX = pos.x * radiusScale;
             float newZ = pos.z * radiusScale;
 
-            vertices[idx] = new Vector3(newX, pos.y, newZ);
+            vertices[idx] = new Vector3(newX, newPos.y, newZ);
         }
 
         mMesh.vertices = vertices;
