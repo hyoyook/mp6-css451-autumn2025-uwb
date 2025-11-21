@@ -42,8 +42,10 @@ public partial class MainController : MonoBehaviour
 
             // Try to select a SPHERE
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 500f);
             if (Physics.Raycast(ray, out RaycastHit hit, 100f, sphereLayer))
             {
+                Debug.DrawLine(ray.origin, hit.point, Color.green, 500f);
                 Debug.Log("MainController: Sphere hit for selection.");
                 SphereController hitSphere = hit.collider.GetComponent<SphereController>();
                 if (hitSphere != null)
@@ -62,9 +64,13 @@ public partial class MainController : MonoBehaviour
 
             // Try to hit a MANIPULATOR axis
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit, 1000f, manipulatorLayer)) // Use manipulator layer
+            Debug.DrawRay(ray.origin, ray.direction * 1000f, Color.blue, 200f);
+            bool hitAxis = Physics.Raycast(ray, out RaycastHit hit, 1000f, manipulatorLayer);
+            Debug.Log("MainController: Raycast for manipulator axis hit: " + hitAxis);
+            if (hitAxis)
             {
                 Debug.Log("MainController: Manipulator axis hit for dragging.");
+                Debug.DrawLine(ray.origin, hit.point, Color.yellow, 60f);
                 AxisController axis = hit.collider.GetComponent<AxisController>();
                 if (axis != null)
                 {

@@ -699,9 +699,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LookAtCamera: {fileID: 330585546}
   LookAtTarget: {fileID: 1867670900}
-  tumbleSpeed: 4
-  trackSpeed: 5
-  dollySpeed: 5
+  tumbleSpeed: 2
+  trackSpeed: 2
+  dollySpeed: 2
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0

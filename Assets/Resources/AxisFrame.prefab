@@ -62,7 +62,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 1
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
@@ -186,9 +186,9 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 2
+  m_Radius: 1
+  m_Height: 2.09
+  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &23312970895289594
 MeshRenderer:
@@ -453,9 +453,9 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 0
+  m_Radius: 1
+  m_Height: 2.08
+  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &23161287540632158
 MeshRenderer:
