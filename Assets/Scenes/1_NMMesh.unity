@@ -856,20 +856,10 @@ MonoBehaviour:
   theMesh: {fileID: 1700176449}
   sphereLayer:
     serializedVersion: 2
-<<<<<<< HEAD
-    m_Bits: 0
-  N_Slider: {fileID: 2037139119}
-  M_Slider: {fileID: 1794386896}
-  CylinderN_Slider: {fileID: 79101796}
-  CylinderM_Slider: {fileID: 1531073040}
-  Cylinder_Rotation_Slider: {fileID: 1100306385}
-  shapeDropdown: {fileID: 149109766}
-=======
     m_Bits: 1
   manipulatorLayer:
     serializedVersion: 2
     m_Bits: 64
->>>>>>> Julia/MainControllerUpdated
 --- !u!4 &414097841
 Transform:
   m_ObjectHideFlags: 0

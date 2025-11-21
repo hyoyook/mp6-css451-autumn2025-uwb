@@ -18,8 +18,8 @@ public partial class MainController : MonoBehaviour
     private Vector3 mDragStartPosition;
     private Vector3 mDragStartSpherePosition;
 
-    
-    private bool mControlWasDown = false; 
+
+    private bool mControlWasDown = false;
     private bool mSphereIsSelected = false;
 
     void Update()
@@ -38,8 +38,8 @@ public partial class MainController : MonoBehaviour
         {
             // Debug.Log("MainController: Control + Click detected for selection.");
             if (EventSystem.current.IsPointerOverGameObject()) return;
-            
-            
+
+
             // Try to select a SPHERE
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit, 100f, sphereLayer))
@@ -51,22 +51,24 @@ public partial class MainController : MonoBehaviour
                     HandleSelection(hitSphere.gameObject);
                 }
             }
-            
+
         }
+
         // 2. Check for drag START (on an axis)
         if (Input.GetMouseButtonDown(0) && mSelectedSphere != null)
         {
             Debug.Log("MainController: Mouse Down detected for dragging.");
             if (EventSystem.current.IsPointerOverGameObject()) return;
-            
+
             // Try to hit a MANIPULATOR axis
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit, 100f, manipulatorLayer)) // Use manipulator layer
+            if (Physics.Raycast(ray, out RaycastHit hit, 1000f, manipulatorLayer)) // Use manipulator layer
             {
                 Debug.Log("MainController: Manipulator axis hit for dragging.");
                 AxisController axis = hit.collider.GetComponent<AxisController>();
                 if (axis != null)
                 {
+                    Debug.Log("MainController: Starting drag on axis " + axis.axisDirection);
                     // Start the drag!
                     mIsDragging = true;
                     mSelectedAxis = axis.axisDirection;
@@ -75,6 +77,7 @@ public partial class MainController : MonoBehaviour
                 }
             }
         }
+
         // 3. Check for drag END
         if (Input.GetMouseButtonUp(0))
         {
@@ -92,9 +95,9 @@ public partial class MainController : MonoBehaviour
     void ProcessDrag()
     {
         Vector3 mouseDelta = Input.mousePosition - mDragStartPosition;
-        
-        float dragSpeed = 0.01f; 
-        
+
+        float dragSpeed = 0.01f;
+
         Vector3 worldOffset = Vector3.zero;
 
         switch (mSelectedAxis)
@@ -106,7 +109,7 @@ public partial class MainController : MonoBehaviour
                 worldOffset.y = mouseDelta.y * dragSpeed;
                 break;
             case AxisController.Axis.Z:
-                worldOffset.z = mouseDelta.y * dragSpeed; 
+                worldOffset.z = mouseDelta.y * dragSpeed;
                 break;
         }
 
@@ -135,11 +138,14 @@ public partial class MainController : MonoBehaviour
             // Make sure the spikes viz know to stay on
             mSphereIsSelected = true;
 
-            if (mAxisManipulator == null)
+            if (mAxisManipulator == null || mAxisManipulator.layer != LayerMask.NameToLayer("AxisManipulator"))
             {
+                Debug.Log("Creating Axis Manipulator Instance");
                 mAxisManipulator = Instantiate(AxisFramePrefab);
                 mAxisManipulator.name = "AxisManipulator";
                 mAxisManipulator.layer = LayerMask.NameToLayer("AxisManipulator");
+                applyAxisControllerAndLayer(mAxisManipulator);
+                Debug.Log("Axis Manipulator Layer: " + mAxisManipulator.layer);
             }
             mAxisManipulator.transform.position = mSelectedSphere.transform.position;
         }
@@ -148,19 +154,52 @@ public partial class MainController : MonoBehaviour
     void UpdateMeshVertex()
     {
         if (theMesh == null || mSelectedSphere == null) return;
-        
+
         // Get the index of the sphere (we stored it in the name "SphereController_i")
         string[] nameParts = mSelectedSphere.name.Split('_');
         if (nameParts.Length == 2)
         {
             int index = int.Parse(nameParts[1]);
-            
+
             // Get the sphere's LOCAL position relative to the mesh
             Vector3 localPos = theMesh.transform.InverseTransformPoint(mSelectedSphere.transform.position);
 
             // Tell the mesh to update!
             theMesh.UpdateVertexPosition(index, localPos);
         }
+    }
+
+    void applyAxisControllerAndLayer(GameObject axisController)
+    {
+        Debug.Log("Applying Axis Controller to children of " + axisController.name);
+        GameObject xAxis = axisController.transform.Find("X-Axis").gameObject;
+        GameObject yAxis = axisController.transform.Find("Y-Axis").gameObject;
+        GameObject zAxis = axisController.transform.Find("Z-Axis").gameObject;
+
+
+
+        Debug.Log("X Axis: " + xAxis.name);
+        Debug.Log("Y Axis: " + yAxis.name);
+        Debug.Log("Z Axis: " + zAxis.name);
+
+        if (xAxis.layer != LayerMask.NameToLayer("AxisManipulator"))
+        {
+            xAxis.AddComponent<AxisController>().axisDirection = AxisController.Axis.X;
+            xAxis.layer = LayerMask.NameToLayer("AxisManipulator");
+        }
+        if (yAxis.layer != LayerMask.NameToLayer("AxisManipulator"))
+        {
+            yAxis.AddComponent<AxisController>().axisDirection = AxisController.Axis.Y;
+            yAxis.layer = LayerMask.NameToLayer("AxisManipulator");
+        }
+
+        if (zAxis.layer != LayerMask.NameToLayer("AxisManipulator"))
+        {
+            zAxis.AddComponent<AxisController>().axisDirection = AxisController.Axis.Z;
+            zAxis.layer = LayerMask.NameToLayer("AxisManipulator");
+        }
+
+
     }
 
     /*
