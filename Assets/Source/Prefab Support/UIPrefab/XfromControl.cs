@@ -11,8 +11,12 @@ public class XfromControl : MonoBehaviour {
     private Transform mSelected;
     private Vector3 mPreviousSliderValues = Vector3.zero;
 
-	// Use this for initialization
-	void Start () {
+    // added for mp6
+    public TexturePlacement TextureTarget;
+    private bool InTextureMode = true;
+
+    // Use this for initialization
+    void Start () {
         T.onValueChanged.AddListener(SetToTranslation);
         R.onValueChanged.AddListener(SetToRotation);
         S.onValueChanged.AddListener(SetToScaling);
@@ -30,30 +34,96 @@ public class XfromControl : MonoBehaviour {
     // Initialize slider bars to specific function
     void SetToTranslation(bool v)
     {
+        if (!v) return;
+        if (InTextureMode)
+        {
+            // Z disabled in UV mode
+            X.InitSliderRange(-4f, 4f, TextureTarget.UV_Translate_X);
+            Y.InitSliderRange(-4f, 4f, TextureTarget.UV_Translate_Y);
+            Z.InitSliderRange(0f, 0f, 0f);
+
+            X.TheSlider.interactable = true;
+            Y.TheSlider.interactable = true;
+            Z.TheSlider.interactable = false;
+
+            mPreviousSliderValues = new Vector3(TextureTarget.UV_Translate_X,
+                                                TextureTarget.UV_Translate_Y,
+                                                0f);
+            return;
+        }
+
         Vector3 p = ReadObjectXfrom();
         mPreviousSliderValues = p;
         X.InitSliderRange(-20, 20, p.x);
         Y.InitSliderRange(-20, 20, p.y);
         Z.InitSliderRange(-20, 20, p.z);
+        
+        X.TheSlider.interactable = true;
+        Y.TheSlider.interactable = true;
+        Z.TheSlider.interactable = true;
+
     }
 
     void SetToScaling(bool v)
     {
+        if (!v) return;
+        if (InTextureMode)
+        {
+            // Z disabled in UV mode
+            X.InitSliderRange(0.1f, 10f, TextureTarget.UV_Scale_X);
+            Y.InitSliderRange(0.1f, 10f, TextureTarget.UV_Scale_Y);
+            Z.InitSliderRange(1f, 1f, 1f);
+
+            X.TheSlider.interactable = true;
+            Y.TheSlider.interactable = true;
+            Z.TheSlider.interactable = false;
+
+            mPreviousSliderValues = new Vector3(TextureTarget.UV_Scale_X,
+                                                TextureTarget.UV_Scale_Y,
+                                                0f);
+            return;
+        }
+
         Vector3 s = ReadObjectXfrom();
         mPreviousSliderValues = s;
         X.InitSliderRange(0.1f, 5, s.x);
         Y.InitSliderRange(0.1f, 5, s.y);
         Z.InitSliderRange(0.1f, 5, s.z);
+
+        X.TheSlider.interactable = true;
+        Y.TheSlider.interactable = true;
+        Z.TheSlider.interactable = true;
     }
 
     void SetToRotation(bool v)
     {
+        if (!v) return;
+        if (InTextureMode)
+        {
+            // only Z rotation
+            X.InitSliderRange(0f, 0f, 0f);
+            Y.InitSliderRange(0f, 0f, 0f);
+            Z.InitSliderRange(-180f, 180f, TextureTarget.UV_Rotation);
+
+            X.TheSlider.interactable = false;
+            Y.TheSlider.interactable = false;
+            Z.TheSlider.interactable = true;
+
+            mPreviousSliderValues = new Vector3(0f, 0f, TextureTarget.UV_Rotation);
+
+            return;
+        }
+
         Vector3 r = ReadObjectXfrom();
         mPreviousSliderValues = r;
         X.InitSliderRange(-180, 180, r.x);
         Y.InitSliderRange(-180, 180, r.y);
         Z.InitSliderRange(-180, 180, r.z);
         mPreviousSliderValues = r;
+
+        X.TheSlider.interactable = true;
+        Y.TheSlider.interactable = true;
+        Z.TheSlider.interactable = true;
     }
     //---------------------------------------------------------------------------------
 
@@ -61,6 +131,22 @@ public class XfromControl : MonoBehaviour {
     // resopond to sldier bar value changes
     void XValueChanged(float v)
     {
+        if (InTextureMode)
+        {
+            if (T.isOn)
+            {
+                // translate in U
+                TextureTarget.UV_Translate_X = v;
+            }
+            else if (S.isOn)
+            {
+                // scale in U
+                TextureTarget.UV_Scale_X = v;
+            }
+            // no rotation supported about x-axis in uv space
+            return;
+        }
+
         if (mSelected == null)
             return;
         Vector3 p = ReadObjectXfrom();
@@ -74,6 +160,22 @@ public class XfromControl : MonoBehaviour {
     
     void YValueChanged(float v)
     {
+        if (InTextureMode)
+        {
+            if (T.isOn)
+            {
+                // translate in V
+                TextureTarget.UV_Translate_Y = v;
+            }
+            else if (S.isOn)
+            {
+                // scale in V
+                TextureTarget.UV_Scale_Y = v;
+            }
+            // no rotation supported about Y-axis in uv space
+            return;
+        }
+
         if (mSelected == null)
             return;
         Vector3 p = ReadObjectXfrom();
@@ -87,6 +189,17 @@ public class XfromControl : MonoBehaviour {
 
     void ZValueChanged(float v)
     {
+        if (InTextureMode)
+        {
+            if (R.isOn)
+            {
+                // only Z is valid for rotation
+                TextureTarget.UV_Rotation = v;
+            }
+            // translation and scale about z-axis NOT supported UV space
+            return;
+        }
+
         if (mSelected == null)
             return;
         Vector3 p = ReadObjectXfrom();
@@ -102,6 +215,14 @@ public class XfromControl : MonoBehaviour {
     // new object selected
     public void SetSelectedObject(Transform xform)
     {
+        if (InTextureMode)
+        {
+            if (ObjectName != null)
+            { 
+                ObjectName.text = "Selected: Texture"; 
+            }
+            return;
+        }
         mSelected = xform;
         mPreviousSliderValues = Vector3.zero;
         if (xform != null)
@@ -194,4 +315,5 @@ public class XfromControl : MonoBehaviour {
     where, Axis, is
         Column-0 of RotationMatrix-of-localRotation
     */
+    
 }
