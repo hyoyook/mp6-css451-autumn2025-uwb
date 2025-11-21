@@ -1,24 +1,29 @@
+/*
+ * TODO: REFERENCES
+ * Author:  Dr. Kelvin Sung
+ * Editors: 
+ * Created for CSS451, edited for MP6
+ */
 using UnityEngine;
-
 public partial class MyMesh : MonoBehaviour
 {
     Mesh mMesh;
 
     // Resolution Range (2, 20)
     // Support N by M resolution control
-    public int columns = 10;
-    public int rows = 4;
+    public int columns = 4;
+    public int rows    = 4;
     
     // Track current grid dimensions for normal computation
     private int currentColumns;
     private int currentRows;
 
-    // Axis prefab can be attached to the camera and SphereController (when clicked)
-    
+    // UV array for texture
+    public Vector2[] mInitUV = null;
+
     private void Start()
     {
         Mesh theMesh = GetComponent<MeshFilter>().mesh; // get the mesh component
-        // BuildMesh(columns, rows);
     }
 
     void Update()
@@ -53,7 +58,7 @@ public partial class MyMesh : MonoBehaviour
 
         // write back to the mesh
         mMesh.vertices = v;
-        mMesh.normals = n;
+        mMesh.normals  = n;
     }
 
     public void UpdateVertexPosition(int index, Vector3 newLocalPos)
@@ -93,6 +98,7 @@ public partial class MyMesh : MonoBehaviour
         }
     }
 
+#region build plane mesh
     public void Build_Plane_Mesh(int N, int M)
     {
         BuildMesh(N, M);
@@ -106,18 +112,19 @@ public partial class MyMesh : MonoBehaviour
         row = Mathf.Clamp(row, 2, 20);
         
         // Store current dimensions for normal computation
-        currentColumns = col;
-        currentRows = row;
+        currentColumns  = col;
+        currentRows     = row;
+
+        isCylinderMode = false;
 
         if (mMesh == null) 
         {
-            mMesh = GetComponent<MeshFilter>().mesh;
-            
+            mMesh = GetComponent<MeshFilter>().mesh;  
         }
-        mMesh.Clear();  // delete whatever is there!!
 
+        mMesh.Clear();  // delete whatever is there
 
-        // clean up old controlelrs and normals
+        // clean up old controllers and normals
         if (mControllers != null)
         {
             for (int i = 0; i < mControllers.Length; i++)
@@ -143,10 +150,11 @@ public partial class MyMesh : MonoBehaviour
         int numVertices  = (col + 1) * (row + 1);
         int numTriangles = col * row * 2;
 
-        // vertices and normals
-        Vector3[] v = new Vector3[numVertices];
-        Vector3[] n = new Vector3[numVertices];
-        int[]     t = new int[numTriangles * 3];
+        // vertices, normals, uvs, triangles
+        Vector3[] v  = new Vector3[numVertices];
+        Vector3[] n  = new Vector3[numVertices];
+        Vector2[] uv = new Vector2[numVertices];
+        int[]     t  = new int[numTriangles * 3];
 
         // 2x2 plane on XZ plane at (0, 0)
         float sizeX = 2f;
@@ -157,24 +165,29 @@ public partial class MyMesh : MonoBehaviour
 
         /* every vertex in the mesh's pos 
          *  x = start + (xIndex * gridSpace)
-            z = start + (zIndex * gridSpace)
-        -> the plane always stays the same size, only the resolution changes
+         *  z = start + (zIndex * gridSpace)
+         *  -> the plane always stays the same size, only the resolution changes
          */
 
         float startX = -sizeX * 0.5f; // -1 : -1 <= x, z <= 1
         float startZ = -sizeZ * 0.5f;        
 
-        // vertices
+        // vertices and UVs
         int idx = 0;
         for (int r = 0; r <= row; r++) 
         {
+            float v_coord = r / (float) row;            // 0 <= v_coord <= 1 (vertical)
             for (int c = 0; c <= col; c++) 
             {
                 float x = startX + c * gridSpaceX;
                 float z = startZ + r * gridSpaceZ;
 
                 v[idx] = new Vector3(x, 0f, z);
-                n[idx] = Vector3.up; // always (0, 1, 0)
+                n[idx] = Vector3.up;            // always (0, 1, 0)
+
+                float u_coord = c / (float) col;        // 0 <= u_coord <= 1 (horizontal)
+                uv[idx] = new Vector2(u_coord, v_coord);
+                
                 idx++;
             }
         }
@@ -190,16 +203,15 @@ public partial class MyMesh : MonoBehaviour
                 int i2 = i0 + (col + 1);    // bottom-left
                 int i3 = i2 + 1;            // bottom-right
 
-                // triangle 1 ( top_left, btm_left, btm_right)
+                // triangle 1 (top_left, btm_left, btm_right)
                 t[tri++] = i0; 
                 t[tri++] = i2;
                 t[tri++] = i3;
 
-                // triangle 2 ( top_left, btm_right, top_right)
+                // triangle 2 (top_left, btm_right, top_right)
                 t[tri++] = i0;
                 t[tri++] = i3;
                 t[tri++] = i1;
-
             }
         }
 
@@ -207,10 +219,15 @@ public partial class MyMesh : MonoBehaviour
         mMesh.vertices  = v;
         mMesh.triangles = t;
         mMesh.normals   = n;
+        mMesh.uv = uv;
+
+        // store original plannar uv for TRS <-------------------- (Hyob) note to myself: do i need this?
+        mInitUV = new Vector2[uv.Length];
+        System.Array.Copy(uv, mInitUV, uv.Length);
 
         // initialize controllers and normals
         InitControllers(v);
         InitNormals(v, n);
     }
-
+    #endregion
 }

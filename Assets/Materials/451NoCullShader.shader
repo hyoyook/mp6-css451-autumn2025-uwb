@@ -1,18 +1,15 @@
-﻿﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
 
 Shader "Unlit/451NoCullShader"
 {
 	Properties
 	{
-		_Color ("Color", Color) = (1,1,1,1)
 		_MainTex ("Texture", 2D) = "white" {}
-        _SecTex ("Second Texture", 2D) = "white" {}
-		[Toggle] _UseTexture ("Use Texture", Float) = 0
 	}
 	SubShader
 	{
 		Tags { "RenderType"="Opaque" }
-		LOD 200
+		LOD 100
 		Cull Off
 
 		Pass
@@ -29,7 +26,6 @@ Shader "Unlit/451NoCullShader"
 				float4 vertex : POSITION;
 				float3 normal : NORMAL;
 				float2 uv : TEXCOORD0;
-                float2 uv1 : TEXCOORD1;
 			};
 
 			struct v2f
@@ -37,50 +33,40 @@ Shader "Unlit/451NoCullShader"
 				float4 vertex : SV_POSITION;
 				float3 normal : NORMAL;
 				float2 uv : TEXCOORD0;
-                float2 uv1 : TEXCOORD1;
 			};
 
 			sampler2D _MainTex;
-			// float4 _MainTex_ST;  // must define to support TRANSFORM_TEX
-            sampler2D _SecTex;
-			float4 _SecTex_ST;  // must define to support TRANSFORM_TEX
-			float _UseTexture;
-			float4 _Color;
-			
-			float MyTexOffset_X;
-			float MyTexOffset_Y;
-			float MyTexScale_X;
-			float MyTexScale_Y;
+			float4 _MainTex_ST;  // must define to support TRANSFORM_TEX
 			
 			v2f vert (appdata v)
 			{
 				v2f o;
 				o.vertex = UnityObjectToClipPos(v.vertex);   // World to NDC
+				o.uv = TRANSFORM_TEX(v.uv, _MainTex);   // WHAT IS THIS DOING?
 
-				// o.uv = TRANSFORM_TEX(v.uv, _MainTex);   // WHAT IS THIS DOING?
-				// replace with the following
-					o.uv.x = v.uv.x * MyTexScale_X + MyTexOffset_X;
-					o.uv.y = v.uv.y * MyTexScale_Y + MyTexOffset_Y;
-				o.normal = v.normal; // NOTE: this is in the original object space!!
-
-                // o.uv1 = v.uv1;  // passing on the second texture
-				o.uv1 = TRANSFORM_TEX(v.uv1, _SecTex);
+                // deals with normal
+                // 1. simply passing it on
+                o.normal = v.normal;
+                
 				return o;
 			}
 			
+			// fixed4 frag (v2f i) : SV_Target
+			// {
+			// 	sample the texture
+			// 	fixed4 col = tex2D(_MainTex, i.uv);
+			// 	col = 0.5 * col + 0.5 * fixed4(i.normal, 1.0);
+			// 	return col;
+			// }
+
+			// Hyobin: to remove green tint
 			fixed4 frag (v2f i) : SV_Target
 			{
-				// sample the texture if toggled
-				if (_UseTexture < 0.5)
-				{
-					return _Color;
-				}
-
-				fixed4 col = tex2D(_MainTex, i.uv);
-                fixed4 c2 = tex2D(_SecTex, i.uv1);
-                col = 0.2 * col + 0.8 * c2;
+				fixed4  col = tex2D(_MainTex, i.uv);
+				col = 0.9 * col + fixed4(i.normal, 1.0) * 0.1;
 				return col;
 			}
+
 			ENDCG
 		}
 	}
