@@ -2,6 +2,7 @@ using UnityEngine;
 
 public partial class MyMesh : MonoBehaviour
 {
+
     private GameObject[] mControllers;  // one per vertex
     public GameObject SphereControllerPrefab;
     // init sphere controllers
@@ -15,10 +16,13 @@ public partial class MyMesh : MonoBehaviour
             s.name = $"SphereController_{i}";
             s.transform.SetParent(this.transform);          // Parent under this mesh
             s.transform.localPosition = v[i];               // Position = vertex local position
-
+            
+            int layerIdx = LayerMask.NameToLayer("SphereController");
+            s.layer = layerIdx;
             mControllers[i] = s;
 
-            Debug.Log($"[MyMesh] Created: {s.name}");
+            // Debug.Log($"[MyMesh] Created: {s.name}");
+            s.SetActive(false);
         }
     }
 }

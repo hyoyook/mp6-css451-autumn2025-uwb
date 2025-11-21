@@ -8,14 +8,19 @@ public partial class MyMesh : MonoBehaviour
     // Support N by M resolution control
     public int columns = 10;
     public int rows = 4;
+    
+    // Track current grid dimensions for normal computation
+    private int currentColumns;
+    private int currentRows;
 
     // Axis prefab can be attached to the camera and SphereController (when clicked)
     
     private void Start()
     {
         Mesh theMesh = GetComponent<MeshFilter>().mesh; // get the mesh component
-        BuildMesh(columns, rows);
+        // BuildMesh(columns, rows);
     }
+
     void Update()
     {
         Vector3[] v = mMesh.vertices;          // get curr vertices
@@ -33,12 +38,64 @@ public partial class MyMesh : MonoBehaviour
             v[i] = mControllers[i].transform.localPosition;
         }
 
-        // recompute normals
-        ComputeNormals(v, n);
+        // recompute normals based on mesh type
+        if (IsCylinderMode())
+        {
+            // Debug.Log($"Update(): Recomputing cylinder normals with N={currentCylinderN}, M={currentCylinderM}");
+            ComputeCylinderNormals(v, n, currentCylinderN, currentCylinderM);
+        }
+        else
+        {
+            // Debug.Log($"Update(): Recomputing plane normals with Columns={currentColumns}, Rows={currentRows}");
+            // Debug.Log("IsCylinderMode? " + IsCylinderMode());
+            ComputeNormals(v, n, currentColumns, currentRows);
+        }
 
         // write back to the mesh
         mMesh.vertices = v;
         mMesh.normals = n;
+    }
+
+    public void UpdateVertexPosition(int index, Vector3 newLocalPos)
+    {
+        Vector3[] v = mMesh.vertices;
+        v[index] = newLocalPos;
+        mMesh.vertices = v;
+
+        // We also need to re-compute normals now
+        Vector3[] n = new Vector3[v.Length];
+        ComputeNormals(v, n, currentColumns, currentRows);
+        mMesh.normals = n;
+    }
+
+    public void SetVisualizationActive(bool active)
+    {
+        
+        // Safety check: only run if they exist
+        if (mNormals == null || mControllers == null) return;
+        
+        // Toggle the spikes (Normals)
+        for (int i = 0; i < mNormals.Length; i++)
+        {
+            if (mNormals[i] != null)
+            {
+                mNormals[i].gameObject.SetActive(active);
+            }
+        }
+
+        // Toggle the spheres (Controllers)
+        for (int i = 0; i < mControllers.Length; i++)
+        {
+            if (mControllers[i] != null)
+            {
+                mControllers[i].SetActive(active);
+            }
+        }
+    }
+
+    public void Build_Plane_Mesh(int N, int M)
+    {
+        BuildMesh(N, M);
     }
 
     // build an N x N grid mesh, init controller and normals
@@ -47,6 +104,10 @@ public partial class MyMesh : MonoBehaviour
         // resolution range (2, 20)
         col = Mathf.Clamp(col, 2, 20);
         row = Mathf.Clamp(row, 2, 20);
+        
+        // Store current dimensions for normal computation
+        currentColumns = col;
+        currentRows = row;
 
         if (mMesh == null) 
         {

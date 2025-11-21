@@ -1,9 +1,17 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
+guid: 980752ee792aee04bb9f466c9449ddcb
+timeCreated: 1510701439
+licenseType: Free
+ShaderImporter:
+  defaultTextures: []
+=======
 guid: aeadb9e19f1d93b48a1d49e862ea9994
 ShaderImporter:
   externalObjects: {}
   defaultTextures: []
   nonModifiableTextures: []
+>>>>>>> Julia/MainController
   userData: 
   assetBundleName: 
   assetBundleVariant: 
