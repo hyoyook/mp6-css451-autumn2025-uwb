@@ -4,10 +4,7 @@ Shader "Unlit/451NoCullShader"
 {
 	Properties
 	{
-		_Color ("Color", Color) = (1,1,1,1)
 		_MainTex ("Texture", 2D) = "white" {}
-        _SecTex ("Second Texture", 2D) = "white" {}
-		[Toggle] _UseTexture ("Use Texture", Float) = 0
 	}
 	SubShader
 	{
@@ -29,7 +26,6 @@ Shader "Unlit/451NoCullShader"
 				float4 vertex : POSITION;
 				float3 normal : NORMAL;
 				float2 uv : TEXCOORD0;
-                float2 uv1 : TEXCOORD1;
 			};
 
 			struct v2f
@@ -37,50 +33,45 @@ Shader "Unlit/451NoCullShader"
 				float4 vertex : SV_POSITION;
 				float3 normal : NORMAL;
 				float2 uv : TEXCOORD0;
-                float2 uv1 : TEXCOORD1;
+                float3 vertexWC : TEXCOORD3;
 			};
 
 			sampler2D _MainTex;
-			// float4 _MainTex_ST;  // must define to support TRANSFORM_TEX
-            sampler2D _SecTex;
-			float4 _SecTex_ST;  // must define to support TRANSFORM_TEX
-			float _UseTexture;
-			float4 _Color;
-			
-			float MyTexOffset_X;
-			float MyTexOffset_Y;
-			float MyTexScale_X;
-			float MyTexScale_Y;
+
+            float4 LightPosition;
 			
 			v2f vert (appdata v)
 			{
 				v2f o;
 				o.vertex = UnityObjectToClipPos(v.vertex);   // World to NDC
 
-				// o.uv = TRANSFORM_TEX(v.uv, _MainTex);   // WHAT IS THIS DOING?
-				// replace with the following
-					o.uv.x = v.uv.x * MyTexScale_X + MyTexOffset_X;
-					o.uv.y = v.uv.y * MyTexScale_Y + MyTexOffset_Y;
-				o.normal = v.normal; // NOTE: this is in the original object space!!
+				o.uv = v.uv; // no specific placement support
 
-                // o.uv1 = v.uv1;  // passing on the second texture
-				o.uv1 = TRANSFORM_TEX(v.uv1, _SecTex);
+                o.vertexWC = mul(UNITY_MATRIX_M, v.vertex); // this is in WC space!
+                // this is not pretty but we don't have access to inverse-transpose ...
+                float3 p = v.vertex + v.normal;
+                p = mul(UNITY_MATRIX_M, float4(p, 1));  // now in WC space
+                o.normal = normalize(p - o.vertexWC); // NOTE: this is in the world space!!
 				return o;
 			}
 			
+            // our own function
+            fixed4 ComputeDiffuse(v2f i) {
+                float3 l = normalize(LightPosition - i.vertexWC);
+                return clamp(dot(i.normal, l), 0, 1);
+            }
+
 			fixed4 frag (v2f i) : SV_Target
 			{
-				// sample the texture if toggled
-				if (_UseTexture < 0.5)
-				{
-					return _Color;
-				}
-
+				// sample the texture
 				fixed4 col = tex2D(_MainTex, i.uv);
-                fixed4 c2 = tex2D(_SecTex, i.uv1);
-                col = 0.2 * col + 0.8 * c2;
-				return col;
+                
+                float diff = ComputeDiffuse(i);
+                return col * diff;
+				// return fixed4(diff, diff, diff, 1);   // for debugging
+				// return fixed4(i.normal, 1);  // for debugging
 			}
+
 			ENDCG
 		}
 	}
