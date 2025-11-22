@@ -31,7 +31,7 @@ public partial class MainController : MonoBehaviour
     {
         // bool desiredVisualState = Input.GetKey(KeyCode.LeftControl) || mSphereIsSelected;
         bool desiredVisualState = Input.GetKey(KeyCode.LeftControl);
-        Debug.Log("Desired Visualization State: " + desiredVisualState);
+        // Debug.Log("Desired Visualization State: " + desiredVisualState);
         if (desiredVisualState != mControlWasDown)
         {
             // Only call the function if the state has changed

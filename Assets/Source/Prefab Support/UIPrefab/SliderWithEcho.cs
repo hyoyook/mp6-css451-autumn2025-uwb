@@ -52,4 +52,13 @@ public class SliderWithEcho : MonoBehaviour
         SetSliderValue(v);
     }
 
+    public void DisableSlider() 
+    {
+        TheSlider.interactable = false;
+    }
+    public void EnableSlider() 
+    {
+        TheSlider.interactable = true;
+    }
+
 }
