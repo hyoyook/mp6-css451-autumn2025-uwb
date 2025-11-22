@@ -2,16 +2,14 @@ using UnityEngine;
 
 public partial class MyMesh : MonoBehaviour
 {
-
     public GameObject SphereMarkerPrefab;       // non-selectable (black, no script)
 
     // init sphere controllers
     // Cylinder-specific controller init
-    private void InitCylinderControllers(
-    Vector3[] v,
-    int heightSegments,
-    int radialSegments,
-    int selectableColumn)   // 0 == the first column of vertices
+    private void InitCylinderControllers(Vector3[] v,
+                                         int heightSegments,
+                                         int radialSegments,
+                                         int selectableColumn)   // 0 == the first column of vertices
     {
         mControllers = new GameObject[v.Length];
 

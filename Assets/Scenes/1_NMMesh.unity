@@ -3152,6 +3152,8 @@ MonoBehaviour:
   columns: 4
   rows: 4
   mInitUV: []
+  planeMaterial: {fileID: 2100000, guid: 15e8580f92ef0894ab95a6bb9447dd79, type: 2}
+  cylinderMaterial: {fileID: 2100000, guid: 177c1c53ccc06934f88932e670fcd805, type: 2}
   SphereControllerPrefab: {fileID: 7569281529392866654, guid: b574c6a6f3659c14494a7309ebabb28a, type: 3}
   SphereMarkerPrefab: {fileID: 7569281529392866654, guid: 535352e51a75a4e429a806eee2027e7e, type: 3}
   NormalPrefab: {fileID: 8222470793749598389, guid: ab92ea54d916b29468271fb4693e3fea, type: 3}
@@ -3425,6 +3427,18 @@ PrefabInstance:
     - target: {fileID: 1795043199666914, guid: 2ffe1718366e9384c8bd4b139266eaea, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4387271620634116, guid: 2ffe1718366e9384c8bd4b139266eaea, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4387271620634116, guid: 2ffe1718366e9384c8bd4b139266eaea, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4387271620634116, guid: 2ffe1718366e9384c8bd4b139266eaea, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 4387271620634116, guid: 2ffe1718366e9384c8bd4b139266eaea, type: 3}
       propertyPath: m_LocalPosition.x

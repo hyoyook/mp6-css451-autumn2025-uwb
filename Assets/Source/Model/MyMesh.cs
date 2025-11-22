@@ -20,10 +20,14 @@ public partial class MyMesh : MonoBehaviour
 
     // UV array for texture
     public Vector2[] mInitUV = null;
+    public Material planeMaterial;
+    public Material cylinderMaterial;
+    private MeshRenderer mMeshRenderer;
 
     private void Start()
     {
         Mesh theMesh = GetComponent<MeshFilter>().mesh; // get the mesh component
+        mMeshRenderer = GetComponent<MeshRenderer>();
     }
 
     void Update()
@@ -107,6 +111,7 @@ public partial class MyMesh : MonoBehaviour
     public void Build_Plane_Mesh(int N, int M)
     {
         BuildMesh(N, M);
+        mMeshRenderer.material = planeMaterial;
     }
 
     // build an N x N grid mesh, init controller and normals
