@@ -15,6 +15,7 @@ public class LightControl : MonoBehaviour
 
     void Awake()
     {
+        initSlider();
         XSlider.SetSliderListener(XValueChanged);
         YSlider.SetSliderListener(YValueChanged);
         ZSlider.SetSliderListener(ZValueChanged);
@@ -24,6 +25,7 @@ public class LightControl : MonoBehaviour
     void Start()
     {
         Debug.Log($"LightControl Start: dirLight = {dirLight}");
+
     }
 
     // Update is called once per frame
@@ -65,6 +67,7 @@ public class LightControl : MonoBehaviour
     private void dirLightOn()
     {
         // Debug.Log($"Directional Light Active: {dirLight}");
+        slidersOff();
         DirectionalLight.gameObject.SetActive(true);
         LightPosition.gameObject.SetActive(false);
         Shader.SetGlobalFloat("_EnableDirLight", 1.0f);
@@ -77,6 +80,7 @@ public class LightControl : MonoBehaviour
     private void dirLightOff()
     {
         // Debug.Log($"Directional Light InActive: {dirLight}");
+        slidersOn();
         DirectionalLight.gameObject.SetActive(false);
         LightPosition.gameObject.SetActive(true);
         Shader.SetGlobalFloat("_EnableDirLight", 0.0f);
@@ -84,4 +88,23 @@ public class LightControl : MonoBehaviour
         LightName.text = "Point Light";
         Shader.SetGlobalVector("_LightPosition", LightPosition.position);
     }
+
+    private void initSlider() {
+        XSlider.SetSliderValue(LightPosition.localPosition.x);
+        YSlider.SetSliderValue(LightPosition.localPosition.y);
+        ZSlider.SetSliderValue(LightPosition.localPosition.z);
+    }
+
+    private void slidersOff() {
+        XSlider.DisableSlider();
+        YSlider.DisableSlider();
+        ZSlider.DisableSlider();
+    }
+
+    private void slidersOn() {
+        XSlider.EnableSlider();
+        YSlider.EnableSlider();
+        ZSlider.EnableSlider();
+    }
+
 }
