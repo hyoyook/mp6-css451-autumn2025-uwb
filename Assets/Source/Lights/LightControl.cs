@@ -10,7 +10,7 @@ public class LightControl : MonoBehaviour
 
     public TextMeshProUGUI LightName;
 
-    private bool dirLight = true;
+    public bool dirLight = true;
 
 
     void Awake()
@@ -31,10 +31,15 @@ public class LightControl : MonoBehaviour
     {
         if (dirLight)
         {
+            DirectionalLight.gameObject.SetActive(dirLight);
+            LightPosition.gameObject.SetActive(!dirLight);
             DirectionalLight.localRotation = Quaternion.LookRotation(MainCamera.forward, Vector3.up);
             DirectionalLight.position = MainCamera.position;
         } else
         {
+            DirectionalLight.gameObject.SetActive(dirLight);
+            LightPosition.gameObject.SetActive(!dirLight);
+            
             Shader.SetGlobalVector("LightPosition", LightPosition.localPosition);
         }
             
@@ -42,18 +47,17 @@ public class LightControl : MonoBehaviour
 
     private void XValueChanged(float newValue)
     {
-        
-
+        LightPosition.localPosition = new Vector3(newValue, LightPosition.localPosition.y, LightPosition.localPosition.z);
     }
 
     private void YValueChanged(float newValue)
     {
-        
-
+        LightPosition.localPosition = new Vector3(LightPosition.localPosition.x, newValue, LightPosition.localPosition.z);
     }
 
     private void ZValueChanged(float newValue)
     {
+        LightPosition.localPosition = new Vector3(LightPosition.localPosition.x, LightPosition.localPosition.y, newValue);
         
 
     }

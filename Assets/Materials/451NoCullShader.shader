@@ -25,6 +25,9 @@
             float4 _Color;
             float  _UseTexture;
 
+			float enableDirLight;
+			float EnablePointLight;
+
             struct appdata
             {
                 float4 vertex : POSITION;
