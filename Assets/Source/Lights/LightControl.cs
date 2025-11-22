@@ -10,7 +10,7 @@ public class LightControl : MonoBehaviour
 
     public TextMeshProUGUI LightName;
 
-    public bool dirLight = true;
+    [SerializeField] private bool dirLight = true;
 
 
     void Awake()
@@ -23,26 +23,28 @@ public class LightControl : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        Debug.Log($"LightControl Start: dirLight = {dirLight}");
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Toggle with T key for testing
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            dirLight = !dirLight;
+            // Debug.Log($"Toggled dirLight to: {dirLight}");
+        }
+
+        // Debug.Log($"LightControl Update: dirLight={dirLight}");
         if (dirLight)
         {
-            DirectionalLight.gameObject.SetActive(dirLight);
-            LightPosition.gameObject.SetActive(!dirLight);
-            DirectionalLight.localRotation = Quaternion.LookRotation(MainCamera.forward, Vector3.up);
-            DirectionalLight.position = MainCamera.position;
-        } else
-        {
-            DirectionalLight.gameObject.SetActive(dirLight);
-            LightPosition.gameObject.SetActive(!dirLight);
-            
-            Shader.SetGlobalVector("LightPosition", LightPosition.localPosition);
+            dirLightOn();
         }
-            
+        else
+        {
+            dirLightOff();
+        }
     }
 
     private void XValueChanged(float newValue)
@@ -58,7 +60,28 @@ public class LightControl : MonoBehaviour
     private void ZValueChanged(float newValue)
     {
         LightPosition.localPosition = new Vector3(LightPosition.localPosition.x, LightPosition.localPosition.y, newValue);
-        
+    }
 
+    private void dirLightOn()
+    {
+        // Debug.Log($"Directional Light Active: {dirLight}");
+        DirectionalLight.gameObject.SetActive(true);
+        LightPosition.gameObject.SetActive(false);
+        Shader.SetGlobalFloat("_EnableDirLight", 1.0f);
+        Shader.SetGlobalFloat("_EnablePointLight", 0.0f);
+        LightName.text = "Directional Light";
+        DirectionalLight.localRotation = Quaternion.LookRotation(MainCamera.forward, Vector3.up);
+        DirectionalLight.position = MainCamera.position;
+    }
+
+    private void dirLightOff()
+    {
+        // Debug.Log($"Directional Light InActive: {dirLight}");
+        DirectionalLight.gameObject.SetActive(false);
+        LightPosition.gameObject.SetActive(true);
+        Shader.SetGlobalFloat("_EnableDirLight", 0.0f);
+        Shader.SetGlobalFloat("_EnablePointLight", 1.0f);
+        LightName.text = "Point Light";
+        Shader.SetGlobalVector("_LightPosition", LightPosition.position);
     }
 }
