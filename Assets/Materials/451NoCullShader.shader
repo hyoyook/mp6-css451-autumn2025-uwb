@@ -1,78 +1,84 @@
-﻿﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
-
-Shader "Unlit/451NoCullShader"
+﻿﻿Shader "Unlit/451NoCullShader"
 {
-	Properties
-	{
-		_MainTex ("Texture", 2D) = "white" {}
-	}
-	SubShader
-	{
-		Tags { "RenderType"="Opaque" }
-		LOD 200
-		Cull Off
+    Properties
+    {
+        _MainTex ("Texture", 2D) = "white" {}
+        _Color   ("Base Color", Color) = (1,1,1,1)
+        _UseTexture ("Use Texture (0/1)", Float) = 1
+    }
+    SubShader
+    {
+        Tags { "RenderType"="Opaque" }
+        LOD 200
+        Cull Off
 
-		Pass
-		{
-			CGPROGRAM
-			#pragma vertex vert
-			#pragma fragment frag
-			// make fog work
-			
-			#include "UnityCG.cginc"
+        Pass
+        {
+            CGPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
 
-			struct appdata
-			{
-				float4 vertex : POSITION;
-				float3 normal : NORMAL;
-				float2 uv : TEXCOORD0;
-			};
+            #include "UnityCG.cginc"
+            #include "Lighting.cginc"     // for _WorldSpaceLightPos0, _LightColor0, ambient
 
-			struct v2f
-			{
-				float4 vertex : SV_POSITION;
-				float3 normal : NORMAL;
-				float2 uv : TEXCOORD0;
-                float3 vertexWC : TEXCOORD3;
-			};
+            sampler2D _MainTex;
+            float4 _Color;
+            float  _UseTexture;
 
-			sampler2D _MainTex;
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float2 uv     : TEXCOORD0;
+            };
 
-            float4 LightPosition;
-			
-			v2f vert (appdata v)
-			{
-				v2f o;
-				o.vertex = UnityObjectToClipPos(v.vertex);   // World to NDC
+            struct v2f
+            {
+                float4 vertex     : SV_POSITION;
+                float2 uv         : TEXCOORD0;
+                float3 worldPos   : TEXCOORD1;
+                float3 worldNormal: TEXCOORD2;
+            };
 
-				o.uv = v.uv; // no specific placement support
+			float4 LightPosition;
 
-                o.vertexWC = mul(UNITY_MATRIX_M, v.vertex); // this is in WC space!
-                // this is not pretty but we don't have access to inverse-transpose ...
-                float3 p = v.vertex + v.normal;
-                p = mul(UNITY_MATRIX_M, float4(p, 1));  // now in WC space
-                o.normal = normalize(p - o.vertexWC); // NOTE: this is in the world space!!
-				return o;
-			}
-			
-            // our own function
-            fixed4 ComputeDiffuse(v2f i) {
-                float3 l = normalize(LightPosition - i.vertexWC);
-                return clamp(dot(i.normal, l), 0, 1);
+            v2f vert(appdata v)
+            {
+                v2f o;
+                o.vertex      = UnityObjectToClipPos(v.vertex);
+                o.worldPos    = mul(unity_ObjectToWorld, v.vertex).xyz;
+                o.worldNormal = UnityObjectToWorldNormal(v.normal);
+                o.uv          = v.uv;
+                return o;
             }
 
-			fixed4 frag (v2f i) : SV_Target
-			{
-				// sample the texture
-				fixed4 col = tex2D(_MainTex, i.uv);
-                
-                float diff = ComputeDiffuse(i);
-                return col * diff;
-				// return fixed4(diff, diff, diff, 1);   // for debugging
-				// return fixed4(i.normal, 1);  // for debugging
-			}
+            fixed4 frag(v2f i, float face : VFACE) : SV_Target
+            {
+                // Two-sided normal
+                float3 n = normalize(i.worldNormal);
+                if (face < 0) n = -n;
 
-			ENDCG
-		}
-	}
+                // Support both directional (w==0) and point (w==1) light
+                float3 lightDir = (_WorldSpaceLightPos0.w == 0)
+                    ? normalize(_WorldSpaceLightPos0.xyz)
+                    : normalize(_WorldSpaceLightPos0.xyz - i.worldPos);
+
+                float ndotl = saturate(dot(n, lightDir));
+
+                // Ambient + diffuse
+                float3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz;
+                float3 diffuse = _LightColor0.rgb * ndotl;
+                float3 lighting = ambient + diffuse;
+
+                fixed4 baseCol = (_UseTexture < 0.5)
+                    ? _Color
+                    : tex2D(_MainTex, i.uv);
+
+                baseCol.rgb *= lighting;
+                return baseCol;
+            }
+            ENDCG
+        }
+    }
+    Fallback Off
 }
