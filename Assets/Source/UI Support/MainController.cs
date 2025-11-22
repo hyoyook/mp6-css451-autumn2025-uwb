@@ -190,12 +190,12 @@ public partial class MainController : MonoBehaviour
         {
             if (mSelectedSphere != null)
             {
-                // mSelectedSphere.GetComponent<SphereController>().Deselect();
+                mSelectedSphere.GetComponent<SphereController>().Deselect();
                 mSphereIsSelected = false;
             }
 
             mSelectedSphere = newSphere;
-            // mSelectedSphere.GetComponent<SphereController>().Select();
+            mSelectedSphere.GetComponent<SphereController>().Select();
 
             // Make sure the spikes viz know to stay on
             mSphereIsSelected = true;
@@ -217,7 +217,7 @@ public partial class MainController : MonoBehaviour
     {
         if (mSelectedSphere != null)
         {
-            // mSelectedSphere.GetComponent<SphereController>().Deselect();
+            mSelectedSphere.GetComponent<SphereController>().Deselect();
             mSphereIsSelected = false;
             mSelectedSphere = null;
         }
