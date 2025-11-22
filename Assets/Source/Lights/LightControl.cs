@@ -1,5 +1,15 @@
 using UnityEngine;
 using TMPro;
+
+// Lighting modes
+public enum LightMode
+{
+    DirectionalFollowCamera,
+    DirectionalFixed,
+    PointLight
+}
+
+
 public class LightControl : MonoBehaviour
 {
     public Transform LightPosition;
@@ -10,7 +20,7 @@ public class LightControl : MonoBehaviour
 
     public TextMeshProUGUI LightName;
 
-    [SerializeField] private bool dirLight = true;
+    [SerializeField] private LightMode currentLightMode = LightMode.DirectionalFollowCamera;
 
 
     void Awake()
@@ -24,28 +34,32 @@ public class LightControl : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Debug.Log($"LightControl Start: dirLight = {dirLight}");
+
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Toggle with T key for testing
+        // Toggle with "T"
         if (Input.GetKeyDown(KeyCode.T))
         {
-            dirLight = !dirLight;
-            // Debug.Log($"Toggled dirLight to: {dirLight}");
+            currentLightMode = (LightMode)(((int)currentLightMode + 1) % 3);
+            Debug.Log($"Switched to: {currentLightMode}");
         }
 
         // Debug.Log($"LightControl Update: dirLight={dirLight}");
-        if (dirLight)
+        switch (currentLightMode)
         {
-            dirLightOn();
-        }
-        else
-        {
-            dirLightOff();
+            case LightMode.DirectionalFollowCamera:
+                dirLightFollowCamera();
+                break;
+            case LightMode.DirectionalFixed:
+                dirLightFixed();
+                break;
+            case LightMode.PointLight:
+                pointLightOn();
+                break;
         }
     }
 
@@ -64,22 +78,36 @@ public class LightControl : MonoBehaviour
         LightPosition.localPosition = new Vector3(LightPosition.localPosition.x, LightPosition.localPosition.y, newValue);
     }
 
-    private void dirLightOn()
+    private void dirLightFollowCamera()
     {
-        // Debug.Log($"Directional Light Active: {dirLight}");
         slidersOff();
         DirectionalLight.gameObject.SetActive(true);
         LightPosition.gameObject.SetActive(false);
         Shader.SetGlobalFloat("_EnableDirLight", 1.0f);
         Shader.SetGlobalFloat("_EnablePointLight", 0.0f);
-        LightName.text = "Directional Light";
-        DirectionalLight.localRotation = Quaternion.LookRotation(MainCamera.forward, Vector3.up);
+        LightName.text = "Directional Light (Following Camera)";
+
+        // Follow camera direction and position
+        DirectionalLight.rotation = Quaternion.LookRotation(MainCamera.forward, Vector3.up);
         DirectionalLight.position = MainCamera.position;
     }
 
-    private void dirLightOff()
+    private void dirLightFixed()
     {
-        // Debug.Log($"Directional Light InActive: {dirLight}");
+        slidersOn(); // Enable sliders to control directional light direction
+        DirectionalLight.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
+        DirectionalLight.gameObject.SetActive(true);
+        LightPosition.gameObject.SetActive(false);
+        Shader.SetGlobalFloat("_EnableDirLight", 1.0f);
+        Shader.SetGlobalFloat("_EnablePointLight", 0.0f);
+        LightName.text = "Directional Light (Fixed)";
+
+        // Don't update position/rotation - let sliders control it
+        // The sliders will now control the directional light's direction
+    }
+
+    private void pointLightOn()
+    {
         slidersOn();
         DirectionalLight.gameObject.SetActive(false);
         LightPosition.gameObject.SetActive(true);
@@ -89,19 +117,22 @@ public class LightControl : MonoBehaviour
         Shader.SetGlobalVector("_LightPosition", LightPosition.position);
     }
 
-    private void initSlider() {
+    private void initSlider()
+    {
         XSlider.SetSliderValue(LightPosition.localPosition.x);
         YSlider.SetSliderValue(LightPosition.localPosition.y);
         ZSlider.SetSliderValue(LightPosition.localPosition.z);
     }
 
-    private void slidersOff() {
+    private void slidersOff()
+    {
         XSlider.DisableSlider();
         YSlider.DisableSlider();
         ZSlider.DisableSlider();
     }
 
-    private void slidersOn() {
+    private void slidersOn()
+    {
         XSlider.EnableSlider();
         YSlider.EnableSlider();
         ZSlider.EnableSlider();
