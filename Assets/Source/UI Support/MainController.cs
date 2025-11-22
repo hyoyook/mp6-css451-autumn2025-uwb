@@ -37,13 +37,17 @@ public partial class MainController : MonoBehaviour
     public XfromControl UV_XformControl;
 
 
+
+
     void Update()
     {
-        
+
         bool desiredVisualState = Input.GetKey(KeyCode.LeftControl) || mSphereIsSelected;
         // bool desiredVisualState = Input.GetKey(KeyCode.LeftControl);
-        Debug.Log("Desired Visualization State: " + desiredVisualState);
-        Debug.Log("mControlWasDown: " + mControlWasDown);
+        // Debug.Log("Desired Visualization State: " + desiredVisualState);
+        // Debug.Log("mControlWasDown: " + mControlWasDown);
+        // Debug.Log("mSphereIsSelected: " + mSphereIsSelected);
+        Debug.Log($"Desired Visualization State: {desiredVisualState}, mControlWasDown: {mControlWasDown}, mSphereIsSelected: {mSphereIsSelected}");
         if (desiredVisualState != mControlWasDown)
         {
             // Only call the function if the state has changed
@@ -286,6 +290,14 @@ public partial class MainController : MonoBehaviour
         }
 
 
+    }
+
+    // Used to reset the state when changing shapes.
+    private void resetState()
+    {
+        mSelectedSphere = null;
+        mControlWasDown = false;
+        mSphereIsSelected = false;
     }
 
     /*
