@@ -27,16 +27,22 @@ public partial class MainController : MonoBehaviour
     public XfromControl UV_XformControl;
 
 
+    private void ChangeAxisColor(bool isDragging)
+    {
+        if (mAxisManipulator == null) return;
 
+        AxisController[] axes = mAxisManipulator.GetComponentsInChildren<AxisController>();
+        foreach (AxisController axis in axes)
+        {
+            axis.SetColor(isDragging);
+        }
+    }
 
     void Update()
     {
 
         bool desiredVisualState = Input.GetKey(KeyCode.LeftControl) || mSphereIsSelected;
-        // bool desiredVisualState = Input.GetKey(KeyCode.LeftControl);
-        // Debug.Log("Desired Visualization State: " + desiredVisualState);
-        // Debug.Log("mControlWasDown: " + mControlWasDown);
-        // Debug.Log("mSphereIsSelected: " + mSphereIsSelected);
+
         Debug.Log($"Desired Visualization State: {desiredVisualState}, mControlWasDown: {mControlWasDown}, mSphereIsSelected: {mSphereIsSelected}");
         if (desiredVisualState != mControlWasDown)
         {
@@ -46,8 +52,6 @@ public partial class MainController : MonoBehaviour
             theMesh.SetVisualizationActive(desiredVisualState);
             mControlWasDown = desiredVisualState;
         }
-
-
 
         // 2. Check for drag START (on an axis)
         if (Input.GetKey(KeyCode.LeftControl) && Input.GetMouseButtonDown(0) && mSelectedSphere != null)
@@ -290,24 +294,6 @@ public partial class MainController : MonoBehaviour
         mSphereIsSelected = false;
     }
 
-    /*
-    get called by the UI drop down
-    *** NEED TO UPDATE THIS ***
-    public void OnShapeDropdownChanged(int index)
-    {
-        if (index == 0) // 0 = Plane
-        {
-            theMesh.BuildMesh(theMesh.Resolution);
-        }
-        else if (index == 1) // 1 = Cylinder
-        {
-            // Get values from your other sliders
-            int cylResolution = ... ;
-            int cylSegments = ... ;
-            float cylSweep = ... ;
-            theMesh.BuildCylinderMesh(cylResolution, cylSegments, cylSweep);
-        }
-    }
-    
-    */
+
+
 }
