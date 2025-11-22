@@ -22,6 +22,12 @@ public partial class MainController : MonoBehaviour
     void Start()
     {
         OnShapeDropdownChanged(0);
+        
+        // added to force UI hookup to texture placement
+        if (UV_XformControl != null && TexturePlacement != null)
+        {
+            UV_XformControl.TextureTarget = TexturePlacement;
+        }
     }
 
 

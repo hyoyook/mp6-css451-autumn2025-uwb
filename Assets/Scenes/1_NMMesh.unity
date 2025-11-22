@@ -865,6 +865,8 @@ MonoBehaviour:
   manipulatorLayer:
     serializedVersion: 2
     m_Bits: 64
+  TexturePlacement: {fileID: 1700176453}
+  UV_XformControl: {fileID: 564080516}
   N_Slider: {fileID: 2037139119}
   M_Slider: {fileID: 1794386896}
   CylinderN_Slider: {fileID: 79101796}
@@ -938,6 +940,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5484072657864070702, guid: 1bc3e81e805883f4eb627f6f11e25dbf, type: 3}
+      propertyPath: TextureTarget
+      value: 
+      objectReference: {fileID: 1700176453}
     - target: {fileID: 5583496213505850967, guid: 1bc3e81e805883f4eb627f6f11e25dbf, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1124,6 +1130,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5661126821455041156, guid: 1bc3e81e805883f4eb627f6f11e25dbf, type: 3}
   m_PrefabInstance: {fileID: 564080513}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &564080516 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5484072657864070702, guid: 1bc3e81e805883f4eb627f6f11e25dbf, type: 3}
+  m_PrefabInstance: {fileID: 564080513}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 606785797494fc945a872f1acf67011c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &578076587 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5484213258992347190, guid: 1bc3e81e805883f4eb627f6f11e25dbf, type: 3}
@@ -4195,10 +4212,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1700176450}
   - component: {fileID: 1700176449}
+  - component: {fileID: 1700176453}
   - component: {fileID: 1700176452}
   - component: {fileID: 1700176451}
   m_Layer: 0
-  m_Name: M
+  m_Name: MeshObj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4216,8 +4234,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c60cb3d9b626b54b81336378d9ac3d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  columns: 10
+  columns: 4
   rows: 4
+  mInitUV: []
+  planeMaterial: {fileID: 2100000, guid: 15e8580f92ef0894ab95a6bb9447dd79, type: 2}
+  cylinderMaterial: {fileID: 2100000, guid: 177c1c53ccc06934f88932e670fcd805, type: 2}
   SphereControllerPrefab: {fileID: 7569281529392866654, guid: b574c6a6f3659c14494a7309ebabb28a, type: 3}
   SphereMarkerPrefab: {fileID: 7569281529392866654, guid: 535352e51a75a4e429a806eee2027e7e, type: 3}
   NormalPrefab: {fileID: 8222470793749598389, guid: ab92ea54d916b29468271fb4693e3fea, type: 3}
@@ -4259,7 +4280,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 177c1c53ccc06934f88932e670fcd805, type: 2}
+  - {fileID: 2100000, guid: 15e8580f92ef0894ab95a6bb9447dd79, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4289,6 +4310,23 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1700176448}
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1700176453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1700176448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea110e4037e303741ac1e9f70e07c28a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UV_Translate_X: 0
+  UV_Translate_Y: 0
+  UV_Rotation: 0
+  UV_Scale_X: 1
+  UV_Scale_Y: 1
 --- !u!1 &1754425990
 GameObject:
   m_ObjectHideFlags: 0
@@ -4486,6 +4524,22 @@ PrefabInstance:
     - target: {fileID: 1795043199666914, guid: 2ffe1718366e9384c8bd4b139266eaea, type: 3}
       propertyPath: m_Name
       value: AxisFrame
+      objectReference: {fileID: 0}
+    - target: {fileID: 1795043199666914, guid: 2ffe1718366e9384c8bd4b139266eaea, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4387271620634116, guid: 2ffe1718366e9384c8bd4b139266eaea, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4387271620634116, guid: 2ffe1718366e9384c8bd4b139266eaea, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4387271620634116, guid: 2ffe1718366e9384c8bd4b139266eaea, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 4387271620634116, guid: 2ffe1718366e9384c8bd4b139266eaea, type: 3}
       propertyPath: m_LocalPosition.x

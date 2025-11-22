@@ -22,6 +22,11 @@ public partial class MainController : MonoBehaviour
     private bool mControlWasDown = false;
     private bool mSphereIsSelected = false;
 
+    // --- variables for Texture Control
+    public TexturePlacement TexturePlacement;
+    public XfromControl UV_XformControl;
+
+
     void Update()
     {
         // bool desiredVisualState = Input.GetKey(KeyCode.LeftControl) || mSphereIsSelected;
