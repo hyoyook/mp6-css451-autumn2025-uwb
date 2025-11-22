@@ -35,6 +35,7 @@ public partial class MainController : MonoBehaviour
     {
 
         int N, M;
+        HandleDeselection();
         resetState();
         // Debug.Log("OnShapeDropdown called with index: " + index);
         if (index == 0) // 0 = Plane
