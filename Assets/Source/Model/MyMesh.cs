@@ -24,7 +24,7 @@ public partial class MyMesh : MonoBehaviour
     public Material cylinderMaterial;
     private MeshRenderer mMeshRenderer;
 
-    private void Start()
+    private void Awake()
     {
         Mesh theMesh = GetComponent<MeshFilter>().mesh; // get the mesh component
         mMeshRenderer = GetComponent<MeshRenderer>();

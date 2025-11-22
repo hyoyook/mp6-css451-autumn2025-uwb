@@ -957,6 +957,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5587915081819306961, guid: 1bc3e81e805883f4eb627f6f11e25dbf, type: 3}
+      propertyPath: m_text
+      value: Texture Control
+      objectReference: {fileID: 0}
+    - target: {fileID: 5587915081819306961, guid: 1bc3e81e805883f4eb627f6f11e25dbf, type: 3}
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
       value: 1801810542
       objectReference: {fileID: 0}
@@ -1301,7 +1305,7 @@ RectTransform:
   m_GameObject: {fileID: 671458320}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.20657323, y: 0.33555, z: 1}
+  m_LocalScale: {x: 0.18, y: 0.33555, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1221873549}
@@ -1312,8 +1316,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -250, y: 200}
-  m_SizeDelta: {x: 2000, y: 1103}
+  m_AnchoredPosition: {x: -191, y: 230}
+  m_SizeDelta: {x: 1800, y: 1103}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &671458322
 MonoBehaviour:
@@ -1372,7 +1376,7 @@ MonoBehaviour:
   YSlider: {fileID: 1851813771}
   ZSlider: {fileID: 1276437277}
   LightName: {fileID: 1132017547}
-  dirLight: 1
+  currentLightMode: 0
 --- !u!1 &674336586
 GameObject:
   m_ObjectHideFlags: 0
@@ -1564,6 +1568,18 @@ PrefabInstance:
     - target: {fileID: 3910033156623158530, guid: 583bb42ec5242c445a4963c169cdfd21, type: 3}
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
       value: 1801810542
+      objectReference: {fileID: 0}
+    - target: {fileID: 4286369015910401285, guid: 583bb42ec5242c445a4963c169cdfd21, type: 3}
+      propertyPath: m_Color.b
+      value: 0.8344607
+      objectReference: {fileID: 0}
+    - target: {fileID: 4286369015910401285, guid: 583bb42ec5242c445a4963c169cdfd21, type: 3}
+      propertyPath: m_Color.g
+      value: 0.9056604
+      objectReference: {fileID: 0}
+    - target: {fileID: 4286369015910401285, guid: 583bb42ec5242c445a4963c169cdfd21, type: 3}
+      propertyPath: m_Color.r
+      value: 0.9056604
       objectReference: {fileID: 0}
     - target: {fileID: 4519230949607178532, guid: 583bb42ec5242c445a4963c169cdfd21, type: 3}
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
@@ -2837,7 +2853,7 @@ MonoBehaviour:
   YSlider: {fileID: 1851813771}
   ZSlider: {fileID: 1276437277}
   LightName: {fileID: 1132017547}
-  dirLight: 1
+  currentLightMode: 0
 --- !u!114 &1100306385 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 581213521283744878, guid: 1bc3e81e805883f4eb627f6f11e25dbf, type: 3}
@@ -3013,7 +3029,7 @@ RectTransform:
   m_GameObject: {fileID: 1132017545}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.9, y: 0.98, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1593760474}
@@ -3045,15 +3061,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: Current Mode
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
+  m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3070,14 +3086,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 232.7
+  m_fontSize: 221.85
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 18
+  m_fontSizeMin: 16
   m_fontSizeMax: 1767.5
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -3108,7 +3124,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: -241.67212, y: 0, z: -246.85333, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -3283,6 +3299,18 @@ PrefabInstance:
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
       value: 1801810542
       objectReference: {fileID: 0}
+    - target: {fileID: 7956680680970462927, guid: d5b3b76920377d143ae56f47f97d8589, type: 3}
+      propertyPath: m_Color.b
+      value: 0.8344607
+      objectReference: {fileID: 0}
+    - target: {fileID: 7956680680970462927, guid: d5b3b76920377d143ae56f47f97d8589, type: 3}
+      propertyPath: m_Color.g
+      value: 0.9056604
+      objectReference: {fileID: 0}
+    - target: {fileID: 7956680680970462927, guid: d5b3b76920377d143ae56f47f97d8589, type: 3}
+      propertyPath: m_Color.r
+      value: 0.9056604
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3424,6 +3452,18 @@ PrefabInstance:
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
       value: 1801810542
       objectReference: {fileID: 0}
+    - target: {fileID: 1915738450615357763, guid: d728ca1135ab42242b98ec74c0d28bf0, type: 3}
+      propertyPath: m_Color.b
+      value: 0.8344607
+      objectReference: {fileID: 0}
+    - target: {fileID: 1915738450615357763, guid: d728ca1135ab42242b98ec74c0d28bf0, type: 3}
+      propertyPath: m_Color.g
+      value: 0.9056604
+      objectReference: {fileID: 0}
+    - target: {fileID: 1915738450615357763, guid: d728ca1135ab42242b98ec74c0d28bf0, type: 3}
+      propertyPath: m_Color.r
+      value: 0.9056604
+      objectReference: {fileID: 0}
     - target: {fileID: 2260143503837320546, guid: d728ca1135ab42242b98ec74c0d28bf0, type: 3}
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
       value: 1801810542
@@ -3438,7 +3478,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6688264390753619351, guid: d728ca1135ab42242b98ec74c0d28bf0, type: 3}
       propertyPath: m_Name
-      value: Light Pos -  ZSlider
+      value: Light Pos - ZSlider
       objectReference: {fileID: 0}
     - target: {fileID: 7771313359634678548, guid: d728ca1135ab42242b98ec74c0d28bf0, type: 3}
       propertyPath: m_AnchorMax.x
@@ -3655,7 +3695,7 @@ RectTransform:
   m_GameObject: {fileID: 1458407216}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.7, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1593760474}
@@ -3685,10 +3725,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '"T" to toggle'
+  m_text: Press "T" to toggle Light
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
+  m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3712,15 +3752,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 228.2
-  m_fontSizeBase: 36
+  m_fontSize: 170
+  m_fontSizeBase: 170
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 228.2
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -3750,7 +3790,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: -461.24908, y: 4.186455, z: -437.18744, w: 35.30059}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -4011,7 +4051,7 @@ RectTransform:
   m_GameObject: {fileID: 1593760473}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.9, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1132017546}
