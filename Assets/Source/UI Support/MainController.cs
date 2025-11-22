@@ -39,9 +39,11 @@ public partial class MainController : MonoBehaviour
 
     void Update()
     {
+        
         bool desiredVisualState = Input.GetKey(KeyCode.LeftControl) || mSphereIsSelected;
         // bool desiredVisualState = Input.GetKey(KeyCode.LeftControl);
-        // Debug.Log("Desired Visualization State: " + desiredVisualState);
+        Debug.Log("Desired Visualization State: " + desiredVisualState);
+        Debug.Log("mControlWasDown: " + mControlWasDown);
         if (desiredVisualState != mControlWasDown)
         {
             // Only call the function if the state has changed
@@ -163,7 +165,7 @@ public partial class MainController : MonoBehaviour
             case AxisController.Axis.Z:
                 // Z-movement (depth) often maps better to vertical screen motion
                 movementVector = manipulatorForward;
-                totalDisplacement = mouseTotalDelta.y * zDragSpeed;
+                totalDisplacement = mouseTotalDelta.x * zDragSpeed;
                 break;
         }
 
