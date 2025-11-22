@@ -51,37 +51,10 @@ public partial class MainController : MonoBehaviour
             mControlWasDown = desiredVisualState;
         }
 
-        // 1. Check for selection
-        if (Input.GetKey(KeyCode.LeftControl) && Input.GetMouseButtonDown(0))
-        {
-            // Debug.Log("MainController: Control + Click detected for selection.");
-            if (EventSystem.current.IsPointerOverGameObject()) return;
 
-
-            // Try to select a SPHERE
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            // Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 500f);
-            if (Physics.Raycast(ray, out RaycastHit hit, 100f, sphereLayer))
-            {
-                // Debug.DrawLine(ray.origin, hit.point, Color.green, 500f);
-                // Debug.Log("MainController: Sphere hit for selection.");
-                SphereController hitSphere = hit.collider.GetComponent<SphereController>();
-                if (hitSphere != null)
-                {
-                    HandleSelection(hitSphere.gameObject);
-                }
-            }
-
-            //if click does not hit a sphere or manipulator, deselect 
-            else
-            {
-                HandleDeselection();
-            }
-
-        }
 
         // 2. Check for drag START (on an axis)
-        if (Input.GetMouseButtonDown(0) && mSelectedSphere != null)
+        if (Input.GetKey(KeyCode.LeftControl) && Input.GetMouseButtonDown(0) && mSelectedSphere != null)
         {
             // Debug.Log("MainController: Mouse Down detected for dragging.");
             if (EventSystem.current.IsPointerOverGameObject()) return;
@@ -118,25 +91,37 @@ public partial class MainController : MonoBehaviour
         if (mIsDragging)
         {
             ProcessDrag();
+            return;
         }
 
-        // 5. if click does not hit a sphere or manipulator, deselect
-        // if (Input.GetMouseButtonDown(0) && !mIsDragging)
-        // {
-        //     // Debug.Log("MainController: Mouse Down detected for deselection.");
-        //     if (EventSystem.current.IsPointerOverGameObject()) return;
+        // 1. Check for selection
+        if (Input.GetKey(KeyCode.LeftControl) && Input.GetMouseButtonDown(0))
+        {
+            // Debug.Log("MainController: Control + Click detected for selection.");
+            if (EventSystem.current.IsPointerOverGameObject()) return;
 
-        //     // Try to deselect the sphere
-        //     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        //     if (Physics.Raycast(ray, out RaycastHit hit, 100f, sphereLayer))
-        //     {
-        //         SphereController hitSphere = hit.collider.GetComponent<SphereController>();
-        //         if (hitSphere != null && hitSphere.gameObject == mSelectedSphere)
-        //         {
-        //             HandleDeselection();
-        //         }
-        //     }
-        // }
+
+            // Try to select a SPHERE
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            // Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 500f);
+            if (Physics.Raycast(ray, out RaycastHit hit, 100f, sphereLayer))
+            {
+                // Debug.DrawLine(ray.origin, hit.point, Color.green, 500f);
+                // Debug.Log("MainController: Sphere hit for selection.");
+                SphereController hitSphere = hit.collider.GetComponent<SphereController>();
+                if (hitSphere != null)
+                {
+                    HandleSelection(hitSphere.gameObject);
+                }
+            }
+
+            //if click does not hit a sphere or manipulator, deselect 
+            else
+            {
+                HandleDeselection();
+            }
+
+        }
 
 
 
