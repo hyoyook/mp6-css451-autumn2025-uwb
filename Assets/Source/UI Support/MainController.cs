@@ -39,13 +39,13 @@ public partial class MainController : MonoBehaviour
 
     void Update()
     {
-        // bool desiredVisualState = Input.GetKey(KeyCode.LeftControl) || mSphereIsSelected;
-        bool desiredVisualState = Input.GetKey(KeyCode.LeftControl);
+        bool desiredVisualState = Input.GetKey(KeyCode.LeftControl) || mSphereIsSelected;
+        // bool desiredVisualState = Input.GetKey(KeyCode.LeftControl);
         // Debug.Log("Desired Visualization State: " + desiredVisualState);
         if (desiredVisualState != mControlWasDown)
         {
             // Only call the function if the state has changed
-            
+
             mSelectedSphere = null;
             theMesh.SetVisualizationActive(desiredVisualState);
             mControlWasDown = desiredVisualState;
@@ -70,6 +70,12 @@ public partial class MainController : MonoBehaviour
                 {
                     HandleSelection(hitSphere.gameObject);
                 }
+            }
+
+            //if click does not hit a sphere or manipulator, deselect 
+            else
+            {
+                HandleDeselection();
             }
 
         }
@@ -113,6 +119,26 @@ public partial class MainController : MonoBehaviour
         {
             ProcessDrag();
         }
+
+        // 5. if click does not hit a sphere or manipulator, deselect
+        // if (Input.GetMouseButtonDown(0) && !mIsDragging)
+        // {
+        //     // Debug.Log("MainController: Mouse Down detected for deselection.");
+        //     if (EventSystem.current.IsPointerOverGameObject()) return;
+
+        //     // Try to deselect the sphere
+        //     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //     if (Physics.Raycast(ray, out RaycastHit hit, 100f, sphereLayer))
+        //     {
+        //         SphereController hitSphere = hit.collider.GetComponent<SphereController>();
+        //         if (hitSphere != null && hitSphere.gameObject == mSelectedSphere)
+        //         {
+        //             HandleDeselection();
+        //         }
+        //     }
+        // }
+
+
 
     }
 
@@ -194,6 +220,23 @@ public partial class MainController : MonoBehaviour
                 // Debug.Log("Axis Manipulator Layer: " + mAxisManipulator.layer);
             }
             mAxisManipulator.transform.position = mSelectedSphere.transform.position;
+        }
+    }
+
+    void HandleDeselection()
+    {
+        if (mSelectedSphere != null)
+        {
+            // mSelectedSphere.GetComponent<SphereController>().Deselect();
+            mSphereIsSelected = false;
+            mSelectedSphere = null;
+        }
+
+        // Destroy the axis manipulator
+        GameObject axisManipulator = GameObject.Find("AxisManipulator");
+        if (axisManipulator != null)
+        {
+            GameObject.Destroy(axisManipulator);
         }
     }
 
