@@ -36,18 +36,6 @@ public partial class MainController : MonoBehaviour
     public TexturePlacement TexturePlacement;
     public XfromControl UV_XformControl;
 
-
-    private void ChangeAxisColor(bool isDragging)
-    {
-        if (mAxisManipulator == null) return;
-
-        AxisController[] axes = mAxisManipulator.GetComponentsInChildren<AxisController>();
-        foreach (AxisController axis in axes)
-        {
-            axis.SetColor(isDragging);
-        }
-    }
-
     void Update()
     {
 
