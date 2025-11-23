@@ -1,3 +1,14 @@
+/// ---------------------------------------------------------------------------------
+/// MainController_Dropdown.cs
+/// Author: Julia Nguyen, Alec Situ, Hyobin Yook(CSS451, Team 8)
+/// Last Edited: November 22, 2025
+/// ---------------------------------------------------------------------------------
+/// Created for MP6, CSS451, UWB. 
+/// 
+/// Manages the UI control for mesh selection and resolution, rebuilding the mesh
+/// when user cahnges dropdown or slider values.
+/// ---------------------------------------------------------------------------------
+
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -17,7 +28,7 @@ public partial class MainController : MonoBehaviour
 
         CylinderN_Slider.SetSliderListener(ResolutionSliderChanged);
         CylinderM_Slider.SetSliderListener(ResolutionSliderChanged);
-        Cylinder_Rotation_Slider.SetSliderListener(ResolutionSliderChanged);
+        Cylinder_Rotation_Slider.SetSliderListener(CylinderRotationSliderChanged);
     }
     void Start()
     {
@@ -29,7 +40,6 @@ public partial class MainController : MonoBehaviour
             UV_XformControl.TextureTarget = TexturePlacement;
         }
     }
-
 
     public void OnShapeDropdownChanged(int index)
     {
@@ -79,5 +89,15 @@ public partial class MainController : MonoBehaviour
 
 
         }
+    }
+
+    public void CylinderRotationSliderChanged(float rotation)
+    {
+        int shapeChoice = shapeDropdown.value;
+        if (shapeChoice != 1) return; // Not Cylinder
+
+        // Use the new update method instead of rebuilding
+        theMesh.UpdateCylinderRotation((int)rotation);
+        Debug.Log($"CylinderRotationSliderChanged: Updated cylinder rotation to {rotation}°");
     }
 }

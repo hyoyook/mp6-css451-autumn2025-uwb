@@ -1,3 +1,13 @@
+/// ---------------------------------------------------------------------------------
+/// MyMesh_Manipulate.Cylinder.cs
+/// Author: Alec Situ, Julia Nguyen, Hyobin Yook (CSS451, Team 8)
+/// Last Edited: November 22, 2025
+/// ---------------------------------------------------------------------------------
+/// Created for MP6, CSS451, UWB. 
+/// 
+/// Initialize cylinder vertex controllers
+/// ---------------------------------------------------------------------------------
+
 using UnityEngine;
 
 public partial class MyMesh : MonoBehaviour

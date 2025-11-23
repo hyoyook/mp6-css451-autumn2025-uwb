@@ -1,10 +1,19 @@
-﻿using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEngine.Rendering.DebugUI.Table;
+﻿/// ---------------------------------------------------------------------------------
+/// MyMesh_NormalSupport.cs
+/// Author: Dr. Kelvin Sung
+/// Editor: Julia Nguyen, Alec Situ, Hyobin Yook (CSS451, Team 8)
+/// Last Edited: November 22, 2025
+/// ---------------------------------------------------------------------------------
+/// Edited for MP6, CSS451, UWB. 
+/// 
+/// Compute per-vertex normals from mesh geometry.
+/// ---------------------------------------------------------------------------------
+
+using UnityEngine;
 
 public partial class MyMesh : MonoBehaviour
 {
-    private LineSegment[] mNormals;     // one per vertex
+    private LineSegment[] mNormals;             // one per vertex
     public  LineSegment NormalPrefab;
 
     private void InitNormals(Vector3[] v, Vector3[] n)
@@ -19,12 +28,7 @@ public partial class MyMesh : MonoBehaviour
             mNormals[i] = o;
             mNormals[i].transform.SetParent(this.transform);
 
-            mNormals[i].gameObject.SetActive(false);
-
-            
-            
-            // Debug.Log($"[MyMesh] Created: {o.name}");
-            
+            mNormals[i].gameObject.SetActive(false);            
         }
         UpdateNormals(v, n);
     }
@@ -46,15 +50,14 @@ public partial class MyMesh : MonoBehaviour
     void ComputeNormals(Vector3[] v, Vector3[] n, int col = -1, int row = -1)
     {
         // If col/row not provided, use member variables as fallback
-        if (col < 0) col = Mathf.Max(1, columns);  // N: number of quads in X
-        if (row < 0) row = Mathf.Max(1, rows);  // M: number of quads in Z
+        if (col < 0) col = Mathf.Max(1, columns);   // N: number of quads in X
+        if (row < 0) row = Mathf.Max(1, rows);      // M: number of quads in Z
 
         // clear all vertex normal
         for (int i = 0; i < n.Length; i++)
         {
             n[i] = Vector3.zero;
         }
-
 
         // loop over all quads, compute face normal (2 per quad) 
         for (int r = 0; r < row; r++)

@@ -1,4 +1,5 @@
-﻿﻿Shader "Custom/451NoCullShader"
+﻿﻿// Built with the help of AI
+Shader "Custom/451NoCullShader"
 {
     Properties
     {
@@ -17,7 +18,7 @@
     {
         Tags { "RenderType" = "Opaque" }
         LOD 200
-        Cull Off // no culling, we handle two - sided in the frag
+        Cull Off // no culling, must handle two - sided in the frag
 
         Pass
         {
@@ -61,7 +62,7 @@
             v2f vert (appdata v)
             {
                 v2f o;
-                // Transform vertex to clip space for rendering
+                // Vertex position in object space to clip space
                 o.pos = UnityObjectToClipPos(v.vertex);
                 // Apply texture tiling and offset
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
@@ -110,7 +111,7 @@
                     float3 toPoint = _LightPosition.xyz - i.worldPos;
                     float dist = length(toPoint);
 
-                    if (dist > 1e - 4) // Avoid division by zero
+                    if (dist > 1e-4) // Avoid division by zero; IF YOU USE AUTO FORMATTING (1e-4) CAN SPLIT AND NOT COUNT AS EXPONENT
                     {
                         float3 Lp = toPoint / dist; // normalized light direction
                         float ndot = saturate(dot(n, Lp)); // Dot normal of surface and light direction; saturate clamps 0 - 1

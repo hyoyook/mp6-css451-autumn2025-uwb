@@ -1,5 +1,14 @@
-using UnityEngine;
+/// ---------------------------------------------------------------------------------
+/// MyMesh_Cylinder_NormalSupport.cs
+/// Author: Alec Situ, Julia Nguyen, Hyobin Yook (CSS451, Team 8)
+/// Last Edited: November 22, 2025
+/// ---------------------------------------------------------------------------------
+/// Created for MP6, CSS451, UWB. 
+/// 
+/// Compute per-vertex normals for the cylinder mesh
+/// ---------------------------------------------------------------------------------
 
+using UnityEngine;
 public partial class MyMesh : MonoBehaviour
 {
     // Track current cylinder dimensions for normal computation
