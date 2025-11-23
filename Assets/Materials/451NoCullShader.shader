@@ -1,4 +1,5 @@
-﻿﻿Shader "Custom/451NoCullShader"
+﻿﻿//  Built with the help of AI
+Shader "Custom/451NoCullShader"
 {
     Properties
     {
@@ -17,7 +18,7 @@
     {
         Tags { "RenderType"="Opaque" }
         LOD 200
-        Cull Off          // no culling, we handle two-sided in the frag
+        Cull Off          // no culling, must handle two-sided in the frag
 
         Pass
         {
@@ -60,6 +61,7 @@
             v2f vert (appdata v)
             {
                 v2f o;
+                // Vertex position in object space to clip space
                 o.pos         = UnityObjectToClipPos(v.vertex);
                 o.uv          = TRANSFORM_TEX(v.uv, _MainTex);
 
@@ -71,8 +73,8 @@
 
             fixed4 frag (v2f i, float face : VFACE) : SV_Target
             {
-                // Two-sided: flip normal on back faces
                 float3 n = normalize(i.worldNormal);
+                // Two-sided: flip normal on back faces
                 if (face < 0) n = -n;
 
                 // --- Ambient ---
@@ -102,7 +104,7 @@
                     float3 toPoint = _LightPosition.xyz - i.worldPos;
                     float  dist    = length(toPoint);
 
-                    if (dist > 1e-4)
+                    if (dist > 1e-4) // Avoid division by zero IF YOU USE AUTO FORMATTING (1e-4) CAN SPLIT AND NOT COUNT AS EXPONENT 
                     {
                         float3 Lp   = toPoint / dist;
                         float  ndot = saturate(dot(n, Lp));

@@ -28,7 +28,7 @@ public partial class MainController : MonoBehaviour
 
         CylinderN_Slider.SetSliderListener(ResolutionSliderChanged);
         CylinderM_Slider.SetSliderListener(ResolutionSliderChanged);
-        Cylinder_Rotation_Slider.SetSliderListener(ResolutionSliderChanged);
+        Cylinder_Rotation_Slider.SetSliderListener(CylinderRotationSliderChanged);
     }
     void Start()
     {
@@ -89,5 +89,15 @@ public partial class MainController : MonoBehaviour
 
 
         }
+    }
+
+    public void CylinderRotationSliderChanged(float rotation)
+    {
+        int shapeChoice = shapeDropdown.value;
+        if (shapeChoice != 1) return; // Not Cylinder
+
+        // Use the new update method instead of rebuilding
+        theMesh.UpdateCylinderRotation((int)rotation);
+        Debug.Log($"CylinderRotationSliderChanged: Updated cylinder rotation to {rotation}°");
     }
 }
