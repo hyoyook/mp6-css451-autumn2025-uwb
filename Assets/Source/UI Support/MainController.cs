@@ -18,6 +18,8 @@ public partial class MainController : MonoBehaviour
     private Vector3 mDragStartPosition;
     private Vector3 mDragStartSpherePosition;
 
+    private AxisController mLastSelectedAxis;
+
 
     private bool mControlWasDown = false;
     private bool mSphereIsSelected = false;
@@ -26,19 +28,63 @@ public partial class MainController : MonoBehaviour
     public TexturePlacement TexturePlacement;
     public XfromControl UV_XformControl;
 
-
     void Update()
     {
-        // bool desiredVisualState = Input.GetKey(KeyCode.LeftControl) || mSphereIsSelected;
-        bool desiredVisualState = Input.GetKey(KeyCode.LeftControl);
-        // Debug.Log("Desired Visualization State: " + desiredVisualState);
+
+        bool desiredVisualState = Input.GetKey(KeyCode.LeftControl) || mSphereIsSelected;
+
+        Debug.Log($"Desired Visualization State: {desiredVisualState}, mControlWasDown: {mControlWasDown}, mSphereIsSelected: {mSphereIsSelected}");
         if (desiredVisualState != mControlWasDown)
         {
             // Only call the function if the state has changed
-            
+
             mSelectedSphere = null;
             theMesh.SetVisualizationActive(desiredVisualState);
             mControlWasDown = desiredVisualState;
+        }
+
+        // 2. Check for drag START (on an axis)
+        if (Input.GetKey(KeyCode.LeftControl) && Input.GetMouseButtonDown(0) && mSelectedSphere != null)
+        {
+            // Debug.Log("MainController: Mouse Down detected for dragging.");
+            if (EventSystem.current.IsPointerOverGameObject()) return;
+
+            // Try to hit a MANIPULATOR axis
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            // Debug.DrawRay(ray.origin, ray.direction * 1000f, Color.blue, 200f);
+            bool hitAxis = Physics.Raycast(ray, out RaycastHit hit, 1000f, manipulatorLayer);
+            // Debug.Log("MainController: Raycast for manipulator axis hit: " + hitAxis);
+            if (hitAxis)
+            {
+                // Debug.Log("MainController: Manipulator axis hit for dragging.");
+                // Debug.DrawLine(ray.origin, hit.point, Color.yellow, 60f);
+                AxisController axis = hit.collider.GetComponent<AxisController>();
+                if (axis != null)
+                {
+                    // Debug.Log("MainController: Starting drag on axis " + axis.axisDirection);
+                    mLastSelectedAxis = axis;
+                    // Start the drag!
+                    axis.Highlight(true);
+                    mIsDragging = true;
+                    mSelectedAxis = axis.axisDirection;
+                    mDragStartPosition = Input.mousePosition; // Store screen position
+                    mDragStartSpherePosition = mSelectedSphere.transform.position; // Store world position
+                }
+            }
+        }
+
+        // 3. Check for drag END
+        if (Input.GetMouseButtonUp(0))
+        {
+            mLastSelectedAxis?.Highlight(false);
+            mIsDragging = false;
+        }
+
+        // 4. If DRAGGING, process movement
+        if (mIsDragging)
+        {
+            ProcessDrag();
+            return;
         }
 
         // 1. Check for selection
@@ -62,47 +108,15 @@ public partial class MainController : MonoBehaviour
                 }
             }
 
-        }
-
-        // 2. Check for drag START (on an axis)
-        if (Input.GetMouseButtonDown(0) && mSelectedSphere != null)
-        {
-            // Debug.Log("MainController: Mouse Down detected for dragging.");
-            if (EventSystem.current.IsPointerOverGameObject()) return;
-
-            // Try to hit a MANIPULATOR axis
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            // Debug.DrawRay(ray.origin, ray.direction * 1000f, Color.blue, 200f);
-            bool hitAxis = Physics.Raycast(ray, out RaycastHit hit, 1000f, manipulatorLayer);
-            // Debug.Log("MainController: Raycast for manipulator axis hit: " + hitAxis);
-            if (hitAxis)
+            //if click does not hit a sphere or manipulator, deselect 
+            else
             {
-                // Debug.Log("MainController: Manipulator axis hit for dragging.");
-                // Debug.DrawLine(ray.origin, hit.point, Color.yellow, 60f);
-                AxisController axis = hit.collider.GetComponent<AxisController>();
-                if (axis != null)
-                {
-                    // Debug.Log("MainController: Starting drag on axis " + axis.axisDirection);
-                    // Start the drag!
-                    mIsDragging = true;
-                    mSelectedAxis = axis.axisDirection;
-                    mDragStartPosition = Input.mousePosition; // Store screen position
-                    mDragStartSpherePosition = mSelectedSphere.transform.position; // Store world position
-                }
+                HandleDeselection();
             }
+
         }
 
-        // 3. Check for drag END
-        if (Input.GetMouseButtonUp(0))
-        {
-            mIsDragging = false;
-        }
 
-        // 4. If DRAGGING, process movement
-        if (mIsDragging)
-        {
-            ProcessDrag();
-        }
 
     }
 
@@ -142,7 +156,7 @@ public partial class MainController : MonoBehaviour
             case AxisController.Axis.Z:
                 // Z-movement (depth) often maps better to vertical screen motion
                 movementVector = manipulatorForward;
-                totalDisplacement = mouseTotalDelta.y * zDragSpeed;
+                totalDisplacement = mouseTotalDelta.x * zDragSpeed;
                 break;
         }
 
@@ -164,12 +178,12 @@ public partial class MainController : MonoBehaviour
         {
             if (mSelectedSphere != null)
             {
-                // mSelectedSphere.GetComponent<SphereController>().Deselect();
+                mSelectedSphere.GetComponent<SphereController>().Deselect();
                 mSphereIsSelected = false;
             }
 
             mSelectedSphere = newSphere;
-            // mSelectedSphere.GetComponent<SphereController>().Select();
+            mSelectedSphere.GetComponent<SphereController>().Select();
 
             // Make sure the spikes viz know to stay on
             mSphereIsSelected = true;
@@ -184,6 +198,23 @@ public partial class MainController : MonoBehaviour
                 // Debug.Log("Axis Manipulator Layer: " + mAxisManipulator.layer);
             }
             mAxisManipulator.transform.position = mSelectedSphere.transform.position;
+        }
+    }
+
+    void HandleDeselection()
+    {
+        if (mSelectedSphere != null)
+        {
+            mSelectedSphere.GetComponent<SphereController>().Deselect();
+            mSphereIsSelected = false;
+            mSelectedSphere = null;
+        }
+
+        // Destroy the axis manipulator
+        GameObject axisManipulator = GameObject.Find("AxisManipulator");
+        if (axisManipulator != null)
+        {
+            GameObject.Destroy(axisManipulator);
         }
     }
 
@@ -248,24 +279,14 @@ public partial class MainController : MonoBehaviour
 
     }
 
-    /*
-    get called by the UI drop down
-    *** NEED TO UPDATE THIS ***
-    public void OnShapeDropdownChanged(int index)
+    // Used to reset the state when changing shapes.
+    private void resetState()
     {
-        if (index == 0) // 0 = Plane
-        {
-            theMesh.BuildMesh(theMesh.Resolution);
-        }
-        else if (index == 1) // 1 = Cylinder
-        {
-            // Get values from your other sliders
-            int cylResolution = ... ;
-            int cylSegments = ... ;
-            float cylSweep = ... ;
-            theMesh.BuildCylinderMesh(cylResolution, cylSegments, cylSweep);
-        }
+        mSelectedSphere = null;
+        mControlWasDown = false;
+        mSphereIsSelected = false;
     }
-    
-    */
+
+
+
 }
