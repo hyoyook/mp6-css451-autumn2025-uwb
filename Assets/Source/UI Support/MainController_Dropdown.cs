@@ -22,7 +22,7 @@ public partial class MainController : MonoBehaviour
     void Start()
     {
         OnShapeDropdownChanged(0);
-        
+
         // added to force UI hookup to texture placement
         if (UV_XformControl != null && TexturePlacement != null)
         {
@@ -59,7 +59,8 @@ public partial class MainController : MonoBehaviour
     {
         int shapeChoice = shapeDropdown.value;
         int N, M;
-
+        HandleDeselection();
+        resetState();
         if (shapeChoice == 0) // Plane
         {
 
@@ -74,8 +75,8 @@ public partial class MainController : MonoBehaviour
             M = (int)CylinderM_Slider.GetSliderValue();
             int cylinderRotation = (int)Cylinder_Rotation_Slider.GetSliderValue();
             // Debug.Log($"ResolutionSliderChanged on shapeChoice={shapeChoice}: Cylinder N={N}, M={M}, Cylinder Rotation={cylinderRotation}");
-            theMesh.Build_Cylinder_Mesh(N,M, cylinderRotation);
-            
+            theMesh.Build_Cylinder_Mesh(N, M, cylinderRotation);
+
 
         }
     }
