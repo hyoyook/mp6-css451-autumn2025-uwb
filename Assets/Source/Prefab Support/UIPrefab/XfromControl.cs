@@ -9,7 +9,6 @@
 /// Revised to provide different set of functionalities for multiple UI
 /// ---------------------------------------------------------------------------------
 
-
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
