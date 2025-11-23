@@ -1,3 +1,13 @@
+/// ---------------------------------------------------------------------------------
+/// MainController.cs
+/// Author: Julia Nguyen, Alec Situ, Hyobin Yook(CSS451, Team 8)
+/// Last Edited: November 22, 2025
+/// ---------------------------------------------------------------------------------
+/// Created for MP6, CSS451, UWB. 
+/// 
+/// Handle user interactions with per-vertex sphere controllers
+/// ---------------------------------------------------------------------------------
+
 using UnityEngine;
 using UnityEngine.EventSystems;
 

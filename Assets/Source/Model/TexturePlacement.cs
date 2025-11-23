@@ -1,5 +1,15 @@
+/// ---------------------------------------------------------------------------------
+/// TexturePlacement.cs
+/// Author: Dr. Kelvin Sung
+/// Editor: Hyobin Yook, Alec Situ, Julia Nguyen (CSS451, Team 8)
+/// Last Edited: November 22, 2025
+/// ---------------------------------------------------------------------------------
+/// Edited for MP6, CSS451, UWB. 
+/// 
+/// Updates the UVs to reposition, rotate, and scale the texture on the mesh.
+/// ---------------------------------------------------------------------------------
+
 using UnityEngine;
-using System.Collections;
 
 public class TexturePlacement : MonoBehaviour
 {

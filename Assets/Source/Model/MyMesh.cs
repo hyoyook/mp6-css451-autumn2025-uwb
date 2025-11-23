@@ -1,10 +1,18 @@
-/*
- * TODO: REFERENCES
- * Author:  Dr. Kelvin Sung
- * Editors: 
- * Created for CSS451, edited for MP6
- */
+/// ---------------------------------------------------------------------------------
+/// MyMesh.cs
+/// Author: Dr. Kelvin Sung
+/// Editor: Julia Nguyen, Alec Situ, Hyobin Yook (CSS451, Team 8)
+/// Last Edited: November 22, 2025
+/// ---------------------------------------------------------------------------------
+/// Edited for MP6, CSS451, UWB. 
+/// 
+/// Dynamically builds and updates mesh, by generating vertices, triangles, normals,
+/// UV and per-vertex controllers. Per-vertex controllers handle user manipulation
+/// of each vertex.
+/// ---------------------------------------------------------------------------------
+
 using UnityEngine;
+
 public partial class MyMesh : MonoBehaviour
 {
     Mesh mMesh;
@@ -27,7 +35,7 @@ public partial class MyMesh : MonoBehaviour
     private void Awake()
     {
         Mesh theMesh = GetComponent<MeshFilter>().mesh; // get the mesh component
-        mMeshRenderer = GetComponent<MeshRenderer>();
+        mMeshRenderer = GetComponent<MeshRenderer>();   // MeshRenderer to handle texture
     }
 
     void Update()
@@ -50,13 +58,10 @@ public partial class MyMesh : MonoBehaviour
         // recompute normals based on mesh type
         if (IsCylinderMode())
         {
-            // Debug.Log($"Update(): Recomputing cylinder normals with N={currentCylinderN}, M={currentCylinderM}");
             ComputeCylinderNormals(v, n, currentCylinderN, currentCylinderM);
         }
         else
         {
-            // Debug.Log($"Update(): Recomputing plane normals with Columns={currentColumns}, Rows={currentRows}");
-            // Debug.Log("IsCylinderMode? " + IsCylinderMode());
             ComputeNormals(v, n, currentColumns, currentRows);
         }
 

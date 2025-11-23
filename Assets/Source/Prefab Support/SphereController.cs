@@ -1,14 +1,22 @@
+/// ---------------------------------------------------------------------------------
+/// SphereController.cs
+/// Author: Julia Nguyen, Alec Situ, Hyobin Yook (CSS451, Team 8)
+/// Last Edited: November 22, 2025
+/// ---------------------------------------------------------------------------------
+/// Created for MP6, CSS451, UWB. 
+/// 
+/// Handles sphere controller selection and visualize the selection by chaning
+/// its color (default white, selected red)
+/// ---------------------------------------------------------------------------------
+
 using UnityEngine;
 
 public class SphereController : MonoBehaviour
 {
     private Renderer mRenderer;
-    private Color mDefaultColor = Color.white;
+    private Color mDefaultColor  = Color.white;
     private Color mSelectedColor = Color.red;
 
-    //private bool mIsSelected = false; //not needed here anymore
-    
-    
     // Cache the Renderer and set initial color
     private void Awake()
     {
@@ -19,27 +27,6 @@ public class SphereController : MonoBehaviour
         }
     }
 
-    // Called when user LMB clicks on this sphere
-    /*private void OnMouseDown()
-    {
-        mIsSelected = !mIsSelected;
-
-        if (mRenderer == null)
-        { 
-            return; 
-        }
-
-        // Change color based on selection
-        if (mIsSelected)
-        {
-            mRenderer.material.color = mSelectedColor; // red
-        }
-        else
-        { 
-            mRenderer.material.color = mDefaultColor; 
-        }
-    }*/
-
     // Called BY MainController
     public void Select()
     {
@@ -47,8 +34,7 @@ public class SphereController : MonoBehaviour
         { 
             return; 
         }
-        //if (mRenderer != null)
-            mRenderer.material.color = mSelectedColor; // red
+        mRenderer.material.color = mSelectedColor; // red
     }
 
     public void Deselect()
@@ -57,8 +43,7 @@ public class SphereController : MonoBehaviour
         { 
             return; 
         }
-        //if (mRenderer != null)
-            mRenderer.material.color = mDefaultColor;
+        mRenderer.material.color = mDefaultColor;
     }
 
 }

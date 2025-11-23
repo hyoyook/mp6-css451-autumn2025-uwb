@@ -1,3 +1,13 @@
+/// ---------------------------------------------------------------------------------
+/// MyMesh_Manipulate.cs
+/// Author: Julia Nguyen, Alec Situ, Hyobin Yook (CSS451, Team 8)
+/// Last Edited: November 22, 2025
+/// ---------------------------------------------------------------------------------
+/// Edited for MP6, CSS451, UWB. 
+/// 
+/// Manage a sphere controller for each vertex
+/// ---------------------------------------------------------------------------------
+
 using UnityEngine;
 
 public partial class MyMesh : MonoBehaviour
@@ -5,6 +15,7 @@ public partial class MyMesh : MonoBehaviour
 
     private GameObject[] mControllers;  // one per vertex
     public GameObject SphereControllerPrefab;
+    
     // init sphere controllers
     private void InitControllers(Vector3[] v)
     {

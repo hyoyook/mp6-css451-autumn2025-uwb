@@ -1,8 +1,18 @@
-﻿using UnityEngine;
+﻿/// ---------------------------------------------------------------------------------
+/// XfromControl.cs
+/// Author: Dr. Kelvin Sung
+/// Editor: Julia Nguyen, Alec Situ, Hyobin Yook (CSS451, Team 8)
+/// Last Edited: November 22, 2025
+/// ---------------------------------------------------------------------------------
+/// Edited for MP6, CSS451, UWB. 
+/// 
+/// Revised to provide different set of functionalities for multiple UI
+/// ---------------------------------------------------------------------------------
+
+
+using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
-
 public class XfromControl : MonoBehaviour {
     public Toggle T, R, S;
     public SliderWithEcho X, Y, Z;

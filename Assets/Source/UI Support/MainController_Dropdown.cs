@@ -1,3 +1,14 @@
+/// ---------------------------------------------------------------------------------
+/// MainController_Dropdown.cs
+/// Author: Julia Nguyen, Alec Situ, Hyobin Yook(CSS451, Team 8)
+/// Last Edited: November 22, 2025
+/// ---------------------------------------------------------------------------------
+/// Created for MP6, CSS451, UWB. 
+/// 
+/// Manages the UI control for mesh selection and resolution, rebuilding the mesh
+/// when user cahnges dropdown or slider values.
+/// ---------------------------------------------------------------------------------
+
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -29,7 +40,6 @@ public partial class MainController : MonoBehaviour
             UV_XformControl.TextureTarget = TexturePlacement;
         }
     }
-
 
     public void OnShapeDropdownChanged(int index)
     {

@@ -1,3 +1,14 @@
+/// ---------------------------------------------------------------------------------
+/// MyMesh_Cylinder.cs
+/// Author: Alec Situ, Julia Nguyen, Hyobin Yook (CSS451, Team 8)
+/// Last Edited: November 22, 2025
+/// ---------------------------------------------------------------------------------
+/// Created for MP6, CSS451, UWB. 
+/// 
+/// Builds and updates cylinder mesh. 
+/// Supports UI-triggered rebuild of rotation and resolution changes.
+/// ---------------------------------------------------------------------------------
+
 using UnityEngine;
 
 // Builds the cylinder mesh without top/bottom covers.
