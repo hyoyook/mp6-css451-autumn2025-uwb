@@ -28,6 +28,8 @@ public partial class MainController : MonoBehaviour
     private Vector3 mDragStartPosition;
     private Vector3 mDragStartSpherePosition;
 
+    private AxisController mLastSelectedAxis;
+
 
     private bool mControlWasDown = false;
     private bool mSphereIsSelected = false;
@@ -70,7 +72,9 @@ public partial class MainController : MonoBehaviour
                 if (axis != null)
                 {
                     // Debug.Log("MainController: Starting drag on axis " + axis.axisDirection);
+                    mLastSelectedAxis = axis;
                     // Start the drag!
+                    axis.Highlight(true);
                     mIsDragging = true;
                     mSelectedAxis = axis.axisDirection;
                     mDragStartPosition = Input.mousePosition; // Store screen position
@@ -82,6 +86,7 @@ public partial class MainController : MonoBehaviour
         // 3. Check for drag END
         if (Input.GetMouseButtonUp(0))
         {
+            mLastSelectedAxis?.Highlight(false);
             mIsDragging = false;
         }
 
