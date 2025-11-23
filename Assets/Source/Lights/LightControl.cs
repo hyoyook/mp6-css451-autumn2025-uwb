@@ -9,7 +9,6 @@ public enum LightMode
     PointLight
 }
 
-
 public class LightControl : MonoBehaviour
 {
     public Transform LightPosition;
@@ -29,13 +28,6 @@ public class LightControl : MonoBehaviour
         XSlider.SetSliderListener(XValueChanged);
         YSlider.SetSliderListener(YValueChanged);
         ZSlider.SetSliderListener(ZValueChanged);
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-
     }
 
     // Update is called once per frame
@@ -63,6 +55,7 @@ public class LightControl : MonoBehaviour
         }
     }
 
+    // Sliders for Point Light position.
     private void XValueChanged(float newValue)
     {
         LightPosition.localPosition = new Vector3(newValue, LightPosition.localPosition.y, LightPosition.localPosition.z);
@@ -78,6 +71,7 @@ public class LightControl : MonoBehaviour
         LightPosition.localPosition = new Vector3(LightPosition.localPosition.x, LightPosition.localPosition.y, newValue);
     }
 
+    // Light mode implementations
     private void dirLightFollowCamera()
     {
         slidersOff();
@@ -98,6 +92,8 @@ public class LightControl : MonoBehaviour
         DirectionalLight.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
         DirectionalLight.gameObject.SetActive(true);
         LightPosition.gameObject.SetActive(false);
+
+        // Enable light source type in shader
         Shader.SetGlobalFloat("_EnableDirLight", 1.0f);
         Shader.SetGlobalFloat("_EnablePointLight", 0.0f);
         LightName.text = "Directional Light (Fixed)";
@@ -111,9 +107,12 @@ public class LightControl : MonoBehaviour
         slidersOn();
         DirectionalLight.gameObject.SetActive(false);
         LightPosition.gameObject.SetActive(true);
+        // Enable light source type in shader
         Shader.SetGlobalFloat("_EnableDirLight", 0.0f);
         Shader.SetGlobalFloat("_EnablePointLight", 1.0f);
         LightName.text = "Point Light";
+
+        // Update point light position in shader
         Shader.SetGlobalVector("_LightPosition", LightPosition.position);
     }
 

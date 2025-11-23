@@ -40,8 +40,8 @@ public partial class MyMesh : MonoBehaviour
         }
 
 
-        int radialSegments = N; // number of slices around y axis
-        int heightSegments = M; // number of segments along the height
+        int radialSegments = N; // number of slices/faces around y axis
+        int heightSegments = M; // number of faces needed to build the height
 
 
         int numVertices = (radialSegments + 1) * (heightSegments + 1);
@@ -59,7 +59,7 @@ public partial class MyMesh : MonoBehaviour
         float dy = height / heightSegments;
         float yStart = -height * 0.5f;
 
-        // Adjust Cylinder rotation here
+        // Cylinder rotation here
         // float angleStep = Mathf.PI * 1f / radialSegments;
         float angleStep = (rotation * Mathf.Deg2Rad) / radialSegments;
 
@@ -96,7 +96,7 @@ public partial class MyMesh : MonoBehaviour
 
         // Create triangle indicies
         // One triangle = TopL -> BotL -> BotR
-        // Other Triangle = TopL -> TopR -> BotR
+        // Second Triangle = TopL -> TopR -> BotR
         int tri = 0;
         for (int h = 0; h < heightSegments; h++)
         {

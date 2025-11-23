@@ -1,4 +1,5 @@
-﻿﻿Shader "Custom/451NoCullShader"
+﻿﻿//  Built with the help of AI
+Shader "Custom/451NoCullShader"
 {
     Properties
     {
@@ -103,7 +104,7 @@
                     float3 toPoint = _LightPosition.xyz - i.worldPos;
                     float  dist    = length(toPoint);
 
-                    if (dist > 1e-4)
+                    if (dist > 1e-4) // Avoid division by zero IF YOU USE AUTO FORMATTING (1e-4) CAN SPLIT AND NOT COUNT AS EXPONENT 
                     {
                         float3 Lp   = toPoint / dist;
                         float  ndot = saturate(dot(n, Lp));
