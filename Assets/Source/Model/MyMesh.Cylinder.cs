@@ -1,9 +1,24 @@
+/// ---------------------------------------------------------------------------------
+/// MyMesh_Cylinder.cs
+/// Author: Alec Situ, Julia Nguyen, Hyobin Yook (CSS451, Team 8)
+/// Last Edited: November 22, 2025
+/// ---------------------------------------------------------------------------------
+/// Created for MP6, CSS451, UWB. 
+/// 
+/// Builds and updates cylinder mesh. 
+/// Supports UI-triggered rebuild of rotation and resolution changes.
+/// 
+/// Written with help of AI
+/// ---------------------------------------------------------------------------------
+
 using UnityEngine;
 
 // Builds the cylinder mesh without top/bottom covers.
 // Should be called from the mesh controller script
 public partial class MyMesh : MonoBehaviour
 {
+
+    [SerializeField] private float minRadius = 0.001f;
     public void Build_Cylinder_Mesh(int N, int M, int rotation)
     {
         SetCylinderDimensions(N, M);
@@ -134,77 +149,92 @@ public partial class MyMesh : MonoBehaviour
 
     public void UpdateCylinderVertexPosition(int index, Vector3 newPos)
     {
-        // Debug.Log($"UpdateCylinderVertexPosition called for index {index} to newPos {newPos}");
+        if (mMesh == null) return;                     // Mesh not initialized
         Vector3[] vertices = mMesh.vertices;
+        Vector3[] normals = mMesh.normals;
+        if (index < 0 || index >= vertices.Length) return;  // Invalid index
 
-        // need to caluate the radius by get the new radius from the center.
-        Vector3 oldPosition = vertices[index];
-
-        // Debug.Log($"Old position: {oldPosition}, old radius: {new Vector2(oldPosition.x, oldPosition.z).magnitude}");
-
-        // Radius change
-        float oldRadius = new Vector2(oldPosition.x, oldPosition.z).magnitude;
+        // Existing vertex state
+        Vector3 oldPos = vertices[index];
+        float oldRadius = new Vector2(oldPos.x, oldPos.z).magnitude;
         float newRadius = new Vector2(newPos.x, newPos.z).magnitude;
 
-        // Debug.Log($"new radius={newRadius}, radiusScale={newRadius / oldRadius}");
+        // Decide ring scaling:
+        // 1. oldRadius must be non-zero (avoid divide by zero)
+        // 2. newRadius must be >= minRadius (prevent collapse)
+        // 3. Change magnitude must exceed small threshold (fixes weird jitter)
+        const float radiusChangeThreshold = 0.001f;
+        bool scaleRing =
+            oldRadius > 1e-4f &&
+            newRadius >= minRadius &&
+            Mathf.Abs(newRadius - oldRadius) > radiusChangeThreshold;
 
-        if (oldRadius < 0.0001f)
-        {
-            return; // avoid division by zero
-        }
-
-        // Scale factor
-        float radiusScale = newRadius / oldRadius;
-
-        // find the height (row) of the vertex being moved 
         int radialSegments = currentCylinderN;
         int heightSegments = currentCylinderM;
 
-        int height = index / (radialSegments + 1);
-        // Debug.Log($"Vertex index {index} is at height row {height}");
-
-        // Update all vertices in that height row
-        for (int a = 0; a <= radialSegments; a++)
+        if (scaleRing)
         {
-            int idx = height * (radialSegments + 1) + a;
+            Debug.Log("Ring scale move");
+            // Uniform ring scaling: compute row index (height level)
+            int height = index / (radialSegments + 1);
+            float radiusScale = newRadius / oldRadius; // Scale factor for XZ
 
-            if (idx >= vertices.Length)
+            for (int a = 0; a <= radialSegments; a++)
             {
-                // Debug.LogWarning($"Index {idx} out of bounds for vertices array of length {vertices.Length}");
-                continue;
+                int idx = height * (radialSegments + 1) + a;
+                if (idx >= vertices.Length) continue;
+
+                // Scale existing vertex direction; set Y to newPos.y
+                Vector3 p = vertices[idx];
+                float newX = p.x * radiusScale;
+                float newZ = p.z * radiusScale;
+                vertices[idx] = new Vector3(newX, newPos.y, newZ);
+
+                // Normal: outward along XZ; fallback if near axis
+                Vector2 dir = new Vector2(newX, newZ);
+                normals[idx] = dir.sqrMagnitude < 1e-8f
+                    ? Vector3.up
+                    : new Vector3(dir.normalized.x, 0f, dir.normalized.y);
             }
 
-            Vector3 pos = vertices[idx];
+            // apply mesh changes; recompute normals
+            mMesh.vertices = vertices;
+            ComputeCylinderNormals(vertices, normals, radialSegments, heightSegments);
+            mMesh.normals = normals;
 
-            // Scale x and z by radiusScale
-            float newX = pos.x * radiusScale;
-            float newZ = pos.z * radiusScale;
-
-            vertices[idx] = new Vector3(newX, newPos.y, newZ);
+            // Sync controller spheres for entire ring
+            if (mControllers != null)
+            {
+                for (int a = 0; a <= radialSegments; a++)
+                {
+                    int idx = height * (radialSegments + 1) + a;
+                    if (idx < mControllers.Length && mControllers[idx] != null)
+                        mControllers[idx].transform.localPosition = vertices[idx];
+                }
+            }
         }
-
-        mMesh.vertices = vertices;
-        ComputeCylinderNormals(vertices, mMesh.normals, radialSegments, heightSegments);
-
-
-        // Update controller sphere positions
-        for (int a = 0; a <= radialSegments; a++)
+        else
         {
-            int idx = height * (radialSegments + 1) + a;
+            Debug.Log("Single vertex move");
+            // Local vertex move only (allows crossing center). Does not alter neighbors.
+            vertices[index] = newPos;
 
-            if (idx >= mControllers.Length)
-            {
-                // Debug.LogWarning($"Index {idx} out of bounds for controllers array of length {mControllers.Length}");
-                continue;
-            }
+            // Normal: outward from axis; if at axis choose arbitrary up to avoid zero normal
+            Vector2 r = new Vector2(newPos.x, newPos.z);
+            normals[index] = r.sqrMagnitude < 1e-8f
+                ? Vector3.up
+                : new Vector3(r.normalized.x, 0f, r.normalized.y);
 
-            Vector3 pos = vertices[idx];
-            mControllers[idx].transform.localPosition = pos;
+            // apply single-vertex change
+            mMesh.vertices = vertices;
+            mMesh.normals = normals;
+
+            // Update only this controller sphere
+            if (mControllers != null && index < mControllers.Length && mControllers[index] != null)
+                mControllers[index].transform.localPosition = newPos;
         }
     }
 
-
-    // Added method to update cylinder rotation (because our previous method rebuilt the mesh)
     public void UpdateCylinderRotation(int rotation)
     {
         if (mMesh == null) return;
@@ -217,7 +247,6 @@ public partial class MyMesh : MonoBehaviour
 
         float angleStep = (rotation * Mathf.Deg2Rad) / radialSegments;
 
-        // Update vertices while preserving radius modifications
         for (int h = 0; h <= heightSegments; h++)
         {
             for (int a = 0; a <= radialSegments; a++)
@@ -226,38 +255,47 @@ public partial class MyMesh : MonoBehaviour
                 if (idx >= vertices.Length) continue;
 
                 Vector3 currentPos = vertices[idx];
+                float currentY = currentPos.y; // Preserve Y
 
-                // Calculate current radius (preserve any modifications)
-                float currentRadius = new Vector2(currentPos.x, currentPos.z).magnitude;
-                float currentY = currentPos.y; // Preserve Y modifications
-
-                // Calculate new angle
+                // Calculate new "expected" direction at this angle
                 float angle = a * angleStep;
                 float cosA = Mathf.Cos(angle);
                 float sinA = Mathf.Sin(angle);
+                Vector2 expectedDir = new Vector2(cosA, sinA);
 
-                // Apply new angle with preserved radius and Y
-                vertices[idx] = new Vector3(currentRadius * cosA, currentY, currentRadius * sinA);
-                normals[idx] = new Vector3(cosA, 0f, sinA);
+                // Current XZ position
+                Vector2 currentXZ = new Vector2(currentPos.x, currentPos.z);
+                float currentRadius = currentXZ.magnitude;
+
+                // Determine if vertex is flipped: dot product with expected direction
+                float dot = Vector2.Dot(currentXZ.normalized, expectedDir);
+                float sign = (currentRadius < 1e-5f) ? 1f : Mathf.Sign(dot); // if at center, default to positive
+
+                // Apply signed radius in new direction
+                float signedRadius = currentRadius * sign;
+                vertices[idx] = new Vector3(signedRadius * cosA, currentY, signedRadius * sinA);
+
+                // Normal: always outward from actual position (recompute after to handle flips correctly)
+                Vector2 finalXZ = new Vector2(vertices[idx].x, vertices[idx].z);
+                normals[idx] = finalXZ.sqrMagnitude < 1e-8f
+                    ? Vector3.up
+                    : new Vector3(finalXZ.normalized.x, 0f, finalXZ.normalized.y);
             }
         }
 
         mMesh.vertices = vertices;
         mMesh.normals = normals;
 
-        // Update controller sphere positions
+        // Update controller spheres
         if (mControllers != null)
         {
             for (int i = 0; i < mControllers.Length && i < vertices.Length; i++)
             {
                 if (mControllers[i] != null)
-                {
                     mControllers[i].transform.localPosition = vertices[i];
-                }
             }
         }
 
-        // Update normal visualization
         UpdateNormals(vertices, normals);
     }
 }
