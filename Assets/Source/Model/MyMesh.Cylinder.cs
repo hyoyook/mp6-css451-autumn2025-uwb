@@ -132,7 +132,8 @@ public partial class MyMesh : MonoBehaviour
     }
 
 
-    public void UpdateCylinderVertexPosition(int index, Vector3 newPos) {
+    public void UpdateCylinderVertexPosition(int index, Vector3 newPos)
+    {
         // Debug.Log($"UpdateCylinderVertexPosition called for index {index} to newPos {newPos}");
         Vector3[] vertices = mMesh.vertices;
 
@@ -147,7 +148,8 @@ public partial class MyMesh : MonoBehaviour
 
         // Debug.Log($"new radius={newRadius}, radiusScale={newRadius / oldRadius}");
 
-        if (oldRadius < 0.0001f) {
+        if (oldRadius < 0.0001f)
+        {
             return; // avoid division by zero
         }
 
@@ -162,10 +164,12 @@ public partial class MyMesh : MonoBehaviour
         // Debug.Log($"Vertex index {index} is at height row {height}");
 
         // Update all vertices in that height row
-        for (int a = 0; a <= radialSegments; a++) {
+        for (int a = 0; a <= radialSegments; a++)
+        {
             int idx = height * (radialSegments + 1) + a;
 
-            if (idx >= vertices.Length) {
+            if (idx >= vertices.Length)
+            {
                 // Debug.LogWarning($"Index {idx} out of bounds for vertices array of length {vertices.Length}");
                 continue;
             }
@@ -184,10 +188,12 @@ public partial class MyMesh : MonoBehaviour
 
 
         // Update controller sphere positions
-        for (int a = 0; a <= radialSegments; a++) {
+        for (int a = 0; a <= radialSegments; a++)
+        {
             int idx = height * (radialSegments + 1) + a;
 
-            if (idx >= mControllers.Length) {
+            if (idx >= mControllers.Length)
+            {
                 // Debug.LogWarning($"Index {idx} out of bounds for controllers array of length {mControllers.Length}");
                 continue;
             }
@@ -195,7 +201,63 @@ public partial class MyMesh : MonoBehaviour
             Vector3 pos = vertices[idx];
             mControllers[idx].transform.localPosition = pos;
         }
+    }
 
 
+    // Added method to update cylinder rotation (because our previous method rebuilt the mesh)
+    public void UpdateCylinderRotation(int rotation)
+    {
+        if (mMesh == null) return;
+
+        Vector3[] vertices = mMesh.vertices;
+        Vector3[] normals = mMesh.normals;
+
+        int radialSegments = currentCylinderN;
+        int heightSegments = currentCylinderM;
+
+        float angleStep = (rotation * Mathf.Deg2Rad) / radialSegments;
+
+        // Update vertices while preserving radius modifications
+        for (int h = 0; h <= heightSegments; h++)
+        {
+            for (int a = 0; a <= radialSegments; a++)
+            {
+                int idx = h * (radialSegments + 1) + a;
+                if (idx >= vertices.Length) continue;
+
+                Vector3 currentPos = vertices[idx];
+
+                // Calculate current radius (preserve any modifications)
+                float currentRadius = new Vector2(currentPos.x, currentPos.z).magnitude;
+                float currentY = currentPos.y; // Preserve Y modifications
+
+                // Calculate new angle
+                float angle = a * angleStep;
+                float cosA = Mathf.Cos(angle);
+                float sinA = Mathf.Sin(angle);
+
+                // Apply new angle with preserved radius and Y
+                vertices[idx] = new Vector3(currentRadius * cosA, currentY, currentRadius * sinA);
+                normals[idx] = new Vector3(cosA, 0f, sinA);
+            }
+        }
+
+        mMesh.vertices = vertices;
+        mMesh.normals = normals;
+
+        // Update controller sphere positions
+        if (mControllers != null)
+        {
+            for (int i = 0; i < mControllers.Length && i < vertices.Length; i++)
+            {
+                if (mControllers[i] != null)
+                {
+                    mControllers[i].transform.localPosition = vertices[i];
+                }
+            }
+        }
+
+        // Update normal visualization
+        UpdateNormals(vertices, normals);
     }
 }
