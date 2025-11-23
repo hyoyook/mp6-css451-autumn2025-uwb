@@ -17,7 +17,7 @@
     {
         Tags { "RenderType"="Opaque" }
         LOD 200
-        Cull Off          // no culling, we handle two-sided in the frag
+        Cull Off          // no culling, must handle two-sided in the frag
 
         Pass
         {
@@ -60,6 +60,7 @@
             v2f vert (appdata v)
             {
                 v2f o;
+                // Vertex position in object space to clip space
                 o.pos         = UnityObjectToClipPos(v.vertex);
                 o.uv          = TRANSFORM_TEX(v.uv, _MainTex);
 
@@ -71,8 +72,8 @@
 
             fixed4 frag (v2f i, float face : VFACE) : SV_Target
             {
-                // Two-sided: flip normal on back faces
                 float3 n = normalize(i.worldNormal);
+                // Two-sided: flip normal on back faces
                 if (face < 0) n = -n;
 
                 // --- Ambient ---
