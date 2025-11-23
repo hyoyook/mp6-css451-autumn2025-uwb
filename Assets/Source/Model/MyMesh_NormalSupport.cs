@@ -1,9 +1,10 @@
 ﻿/// ---------------------------------------------------------------------------------
 /// MyMesh_NormalSupport.cs
-/// Author: Hyobin Yook, Alec Situ, Julia Nguyen (CSS451, Team 8)
+/// Author: Dr. Kelvin Sung
+/// Editor: Julia Nguyen, Alec Situ, Hyobin Yook (CSS451, Team 8)
 /// Last Edited: November 22, 2025
 /// ---------------------------------------------------------------------------------
-/// Created for MP6, CSS451, UWB. 
+/// Edited for MP6, CSS451, UWB. 
 /// 
 /// Compute per-vertex normals from mesh geometry.
 /// ---------------------------------------------------------------------------------
