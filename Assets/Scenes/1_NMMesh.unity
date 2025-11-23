@@ -304,7 +304,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9070416639545997232, guid: d728ca1135ab42242b98ec74c0d28bf0, type: 3}
       propertyPath: m_MinValue
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9070416639545997232, guid: d728ca1135ab42242b98ec74c0d28bf0, type: 3}
       propertyPath: m_WholeNumbers
@@ -1003,7 +1003,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a76cbb19b9b3a1e43a14fbe4a635df17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AxisFramePrefab: {fileID: 1612508849}
+  AxisFramePrefab: {fileID: 1160686939467385637, guid: e97d51513e2516d4497198df8de35961, type: 3}
   theMesh: {fileID: 1700176449}
   sphereLayer:
     serializedVersion: 2
@@ -2001,7 +2001,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1642228634760540877, guid: 1bc3e81e805883f4eb627f6f11e25dbf, type: 3}
       propertyPath: m_MinValue
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1642228634760540877, guid: 1bc3e81e805883f4eb627f6f11e25dbf, type: 3}
       propertyPath: m_WholeNumbers
@@ -2125,7 +2125,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4207298705956386734, guid: 1bc3e81e805883f4eb627f6f11e25dbf, type: 3}
       propertyPath: m_MinValue
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4207298705956386734, guid: 1bc3e81e805883f4eb627f6f11e25dbf, type: 3}
       propertyPath: m_WholeNumbers
@@ -2217,7 +2217,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5587044064594359562, guid: 1bc3e81e805883f4eb627f6f11e25dbf, type: 3}
       propertyPath: m_Name
-      value: CylinderControl
+      value: MeshControl
       objectReference: {fileID: 0}
     - target: {fileID: 5587044064594359562, guid: 1bc3e81e805883f4eb627f6f11e25dbf, type: 3}
       propertyPath: m_IsActive
@@ -4049,7 +4049,7 @@ GameObject:
   - component: {fileID: 1482506782}
   - component: {fileID: 1482506781}
   m_Layer: 5
-  m_Name: CylinderPanel
+  m_Name: MeshPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4279,7 +4279,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6632320040891229174, guid: 583bb42ec5242c445a4963c169cdfd21, type: 3}
       propertyPath: m_MinValue
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6632320040891229174, guid: 583bb42ec5242c445a4963c169cdfd21, type: 3}
       propertyPath: m_WholeNumbers
@@ -4367,7 +4367,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 348d9dd09805fe642a7ee9f022a56602, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.025
+  m_Volume: 0.01
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -4844,11 +4844,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1611331020}
   m_CullTransparentMesh: 1
---- !u!1 &1612508849 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1795043199666914, guid: 2ffe1718366e9384c8bd4b139266eaea, type: 3}
-  m_PrefabInstance: {fileID: 1870470210}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1629378591
 GameObject:
   m_ObjectHideFlags: 0
