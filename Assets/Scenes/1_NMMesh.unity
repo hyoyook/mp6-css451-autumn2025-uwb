@@ -1005,7 +1005,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a76cbb19b9b3a1e43a14fbe4a635df17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AxisFramePrefab: {fileID: 1612508849}
+  AxisFramePrefab: {fileID: 1160686939467385637, guid: 4cdef5b8cd06d894586efe91ba861565, type: 3}
   theMesh: {fileID: 1700176449}
   sphereLayer:
     serializedVersion: 2
@@ -4862,11 +4862,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1611331020}
   m_CullTransparentMesh: 1
---- !u!1 &1612508849 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1795043199666914, guid: 2ffe1718366e9384c8bd4b139266eaea, type: 3}
-  m_PrefabInstance: {fileID: 1870470210}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1629378591
 GameObject:
   m_ObjectHideFlags: 0
